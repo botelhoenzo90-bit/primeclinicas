@@ -4,4 +4,4 @@
 
 - [x] Abrir a página diretamente no diagnóstico, com copy forte e três perguntas sobre dores reais.
 - [x] Mostrar resultado direcionado, depoimentos em imagem e áudio separados, VSL e estratégia antes do contato.
-- [ ] Verificar o novo fluxo e visual em celular e computador.
+- [x] Verificar o novo fluxo e visual em celular e computador.

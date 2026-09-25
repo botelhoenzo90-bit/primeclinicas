@@ -64,10 +64,10 @@ function ClinicPage() {
   const [answers, setAnswers] = useState<string[]>([]);
   return <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
     <header className="border-b border-border bg-background">
-      <div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 md:h-20 md:px-10">
+      <div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5 md:h-20 md:grid-cols-[1fr_auto_1fr] md:px-10">
         <a href="#inicio" aria-label="Prime, voltar ao início" className="min-w-0"><img src={logoPrime.url} alt="Prime" className="h-9 w-auto object-contain md:h-11" /></a>
         <span className="hidden text-xs font-bold uppercase text-muted-foreground md:block">Estratégia digital para clínicas</span>
-        <Button asChild variant="outline" className="h-9 shrink-0 border-foreground px-3 text-[11px] font-bold uppercase hover:bg-secondary md:h-10 md:px-5"><a href={waLink()} target="_blank" rel="noopener noreferrer">Falar com a Prime <ArrowRight className="hidden sm:block" /></a></Button>
+        <Button asChild variant="outline" className="h-9 shrink-0 border-foreground px-3 text-[11px] font-bold uppercase hover:bg-secondary md:h-10 md:justify-self-end md:px-5"><a href={waLink()} target="_blank" rel="noopener noreferrer">Falar com a Prime <ArrowRight className="hidden sm:block" /></a></Button>
       </div>
     </header>
     <Diagnosis answers={answers} setAnswers={setAnswers} />
@@ -96,7 +96,7 @@ function Diagnosis({ answers, setAnswers }: { answers: string[]; setAnswers: (an
   }, [step]);
   const choose = (option: string) => { setAnswers([...answers.slice(0, step), option]); setStep(step + 1); };
   const result = solutions[answers[0]];
-  return <section id="inicio" className="relative flex min-h-[calc(100svh-4rem)] flex-col border-b border-border bg-background md:min-h-[calc(100svh-5rem)]">
+  return <section id="inicio" className="relative flex min-h-[calc(100svh-6rem)] flex-col border-b border-border bg-background md:min-h-[min(780px,calc(100svh-7rem))]">
     <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 pt-5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground md:px-10 md:pt-8">
       <span className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-primary" /> Diagnóstico de crescimento</span>
       <span>{step < 0 ? "01 / 04" : step < 3 ? `0${step + 2} / 04` : "04 / 04"}</span>
@@ -106,12 +106,12 @@ function Diagnosis({ answers, setAnswers }: { answers: string[]; setAnswers: (an
     </div>
     <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center px-5 py-8 text-center md:py-14" aria-live="polite">
       {step === -1 ? <div className="animate-rise">
-        <span className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-md bg-primary/25 md:mb-8 md:h-16 md:w-16"><ClipboardList className="h-7 w-7" /></span>
+        <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-md bg-primary/25 md:mb-8 md:h-16 md:w-16"><ClipboardList className="h-7 w-7" /></span>
         <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Para médicos e donos de clínicas</p>
         <h1 className="mx-auto mt-4 max-w-3xl font-display text-[clamp(2rem,5vw,4.5rem)] uppercase leading-[1.08]">Sua clínica atende bem. <span className="decoration-primary underline decoration-[0.16em] underline-offset-[0.12em]">Mas quantos pacientes estão escolhendo outra?</span></h1>
-        <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">Descubra onde oportunidades escapam entre a busca do paciente e o agendamento. Três perguntas. Uma direção mais clara.</p>
-        <Button onClick={() => setStep(0)} className="mt-8 h-16 w-full max-w-sm rounded-md px-6 text-base font-bold uppercase shadow-md transition-transform hover:scale-[1.02] md:mt-9">Começar diagnóstico <ArrowRight className="ml-2" /></Button>
-        <p className="mt-5 text-xs font-medium text-muted-foreground">Gratuito · 3 perguntas · Sem cadastro</p>
+        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted-foreground md:mt-5 md:text-lg">Descubra onde oportunidades escapam entre a busca do paciente e o agendamento. Três perguntas. Uma direção mais clara.</p>
+        <Button onClick={() => setStep(0)} className="mt-6 h-16 w-full max-w-sm rounded-md px-6 text-base font-bold uppercase shadow-md transition-transform hover:scale-[1.02] md:mt-9">Começar diagnóstico <ArrowRight className="ml-2" /></Button>
+        <p className="mt-3 text-xs font-medium text-muted-foreground md:mt-5">Gratuito · 3 perguntas · Sem cadastro</p>
       </div> : step < 3 ? <div key={step} className="animate-rise">
         <span className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-md bg-primary/25 font-display text-lg">0{step + 1}</span>
         <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Pergunta {step + 1} de 3</p>
