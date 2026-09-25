@@ -77,7 +77,7 @@ function ClinicQuiz() {
       <span className="min-w-12 text-right text-xs font-bold tabular-nums text-muted-foreground">{String(stage + 1).padStart(2, "0")} / 08</span>
     </div>
     <div key={stage} className="quiz-stage animate-rise mx-auto flex w-full max-w-7xl flex-col justify-center px-5 py-8 md:px-10 md:py-12" aria-live="polite">
-      {stage === 0 && <div className="relative isolate flex min-h-[calc(100svh-10rem)] flex-col justify-center overflow-hidden rounded-[2rem] bg-secondary px-6 py-10 md:min-h-[min(700px,calc(100svh-12rem))] md:px-16">
+      {stage === 0 && <div className="relative isolate flex min-h-[calc(100svh-13rem)] flex-col justify-center overflow-hidden rounded-[2rem] bg-secondary px-6 py-8 md:min-h-[min(700px,calc(100svh-12rem))] md:px-16">
         <img src={clinicImage} alt="Clínica moderna" className="absolute inset-0 -z-20 h-full w-full object-cover object-center" />
         <div className="quiz-image-wash absolute inset-0 -z-10" />
         <div className="max-w-3xl">

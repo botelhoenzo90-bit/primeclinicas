@@ -1,4 +1,4 @@
 - [x] Converter a página em um quiz por etapas, sem conteúdo empilhado sob a abertura.
 - [x] Reforçar a primeira mensagem e modernizar o visual com cantos arredondados.
 - [x] Inserir depoimentos em imagem e áudio, nova VSL, estratégia e resultado no fluxo.
-- [ ] Validar o fluxo, a nova VSL e o visual no celular e no computador.
+- [x] Validar o fluxo, a nova VSL e o visual no celular e no computador.
