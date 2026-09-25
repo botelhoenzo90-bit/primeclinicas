@@ -1,7 +1,4 @@
-- [x] Remodelar a página como diagnóstico de três perguntas para clínicas.
-- [x] Manter vídeo, WhatsApp e depoimentos originais em carrossel.
-- [x] Verificar visual e fluxo do diagnóstico em desktop e celular.
-
-- [x] Abrir a página diretamente no diagnóstico, com copy forte e três perguntas sobre dores reais.
-- [x] Mostrar resultado direcionado, depoimentos em imagem e áudio separados, VSL e estratégia antes do contato.
-- [x] Verificar o novo fluxo e visual em celular e computador.
+- [x] Converter a página em um quiz por etapas, sem conteúdo empilhado sob a abertura.
+- [x] Reforçar a primeira mensagem e modernizar o visual com cantos arredondados.
+- [x] Inserir depoimentos em imagem e áudio, nova VSL, estratégia e resultado no fluxo.
+- [ ] Validar o fluxo, a nova VSL e o visual no celular e no computador.

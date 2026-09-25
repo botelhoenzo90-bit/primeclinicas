@@ -9,5 +9,5 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Keep the clinic campaign as one focused scrolling route with a three-question client-side diagnosis; ad visitors need an uninterrupted path from problem to WhatsApp without storing patient or clinic data.
-- Reuse the original Wistia media ID and existing testimonial asset pointers instead of copying or altering original media; this preserves the established evidence.
+- Keep the clinic campaign as one client-side staged quiz rather than stacked scrolling sections; visitors should see only the current step and proceed from pain to proof, strategy, and WhatsApp without storing patient or clinic data.
+- Use Wistia media ID `lz02wotjxg` and existing testimonial asset pointers without copying or altering the original media; this preserves the supplied evidence and current video.
