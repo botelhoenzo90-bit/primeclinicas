@@ -1,0 +1,3 @@
+- [x] Remodelar a página como diagnóstico de três perguntas para clínicas.
+- [x] Manter vídeo, WhatsApp e depoimentos originais em carrossel.
+- [x] Verificar visual e fluxo do diagnóstico em desktop e celular.
