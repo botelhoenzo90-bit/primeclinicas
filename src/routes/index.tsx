@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, CalendarDays, Check, ChevronLeft, ChevronRight, CircleCheck, Globe2, MapPin, MessageCircle, Play, Search, Sparkles, Target, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import clinicImage from "@/assets/clinic-reception.jpg";
@@ -149,7 +149,7 @@ function VideoSection() {
       const script = document.createElement("script"); script.src = src; script.async = true; if (module) script.type = "module"; document.head.appendChild(script);
     }
   }, []);
-  return <section className="border-y border-border bg-secondary py-16 md:py-22"><div className="mx-auto max-w-5xl px-5 text-center"><p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">Conheça nossa abordagem</p><h2 className="mt-4 text-3xl font-bold md:text-4xl">Entenda como ajudamos clínicas a gerar mais oportunidades</h2><p className="mx-auto mt-4 max-w-2xl text-muted-foreground">Assista ao vídeo e veja como estruturamos a presença digital da sua clínica para atrair mais pacientes, fortalecer sua imagem e facilitar agendamentos.</p><div className="mx-auto mt-9 w-full max-w-[280px] overflow-hidden border border-border bg-background shadow-lg"><div className="relative aspect-[9/16]">{/* @ts-expect-error Wistia custom element */}<wistia-player media-id="qfxqkdkt5n" aspect="0.5625" style={{ display: "block", width: "100%", height: "100%" }} /></div></div><p className="mt-5 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground"><Play className="h-3.5 w-3.5" /> Vídeo original da Prime</p></div></section>;
+  return <section className="border-y border-border bg-secondary py-16 md:py-22"><div className="mx-auto max-w-5xl px-5 text-center"><p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">Conheça nossa abordagem</p><h2 className="mt-4 text-3xl font-bold md:text-4xl">Entenda como ajudamos clínicas a gerar mais oportunidades</h2><p className="mx-auto mt-4 max-w-2xl text-muted-foreground">Assista ao vídeo e veja como estruturamos a presença digital da sua clínica para atrair mais pacientes, fortalecer sua imagem e facilitar agendamentos.</p><div className="mx-auto mt-9 w-full max-w-[280px] overflow-hidden border border-border bg-background shadow-lg"><div className="relative aspect-[9/16]">{createElement("wistia-player", { "media-id": "qfxqkdkt5n", aspect: "0.5625", style: { display: "block", width: "100%", height: "100%" } })}</div></div><p className="mt-5 inline-flex items-center gap-2 text-xs font-medium text-muted-foreground"><Play className="h-3.5 w-3.5" /> Vídeo original da Prime</p></div></section>;
 }
 
 function Services() {
