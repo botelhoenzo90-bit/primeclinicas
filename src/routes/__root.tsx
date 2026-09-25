@@ -77,24 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Páginas de Vendas que Convertem — Entrega no mesmo dia" },
-      { name: "description", content: "Criação de páginas de vendas de alta conversão para empresas, lojas, infoprodutores, mentorias e link na bio. Entrega no mesmo dia, design tecnológico e chamativo." },
-      { name: "theme-color", content: "#05060e" },
-      { property: "og:title", content: "Páginas de Vendas que Convertem — Entrega no mesmo dia" },
-      { property: "og:description", content: "Criação de páginas de vendas de alta conversão para empresas, lojas, infoprodutores, mentorias e link na bio. Entrega no mesmo dia, design tecnológico e chamativo." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Páginas de Vendas que Convertem — Entrega no mesmo dia" },
-      { name: "twitter:description", content: "Criação de páginas de vendas de alta conversão para empresas, lojas, infoprodutores, mentorias e link na bio. Entrega no mesmo dia, design tecnológico e chamativo." },
-      { property: "og:image", content: "https://paginasprime.lovable.app/og-image.png" },
-      { name: "twitter:image", content: "https://paginasprime.lovable.app/og-image.png" },
+      { name: "theme-color", content: "#fefefe" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" },
     ],
     scripts: [
       {
@@ -120,7 +110,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>
