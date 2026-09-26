@@ -465,3 +465,18 @@
  .diagnostic-action{border-radius:22px}
 }
 @media(prefers-reduced-motion:reduce){.proof-top-images .testimonial-track{animation:none;will-change:auto}.proof-top-images{overflow-x:auto}.analysis-symbol,.analysis-progress span{animation:none}.analysis-progress span{transform:none}}
+
+/* Contexto da clínica e convite personalizado ao fim do diagnóstico. */
+.profile-stage{display:flex;align-items:center;justify-content:center}
+.profile-stage .question-center{width:min(660px,100%)}
+.profile-kicker{display:inline-block;background:var(--primary);color:var(--primary-foreground);padding:9px 14px;border-radius:6px;font-size:11px;font-weight:900}
+.profile-stage form{max-width:600px;margin:32px auto 0;text-align:left;display:flex;flex-direction:column;gap:10px}
+.profile-stage label{font-size:13px;font-weight:800;color:var(--foreground);margin-top:9px}
+.profile-stage input,.profile-stage textarea{width:100%;border:1px solid var(--border);background:var(--card);color:var(--foreground);border-radius:10px;padding:15px 17px;font:inherit;font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
+.profile-stage textarea{resize:vertical;min-height:110px}
+.profile-stage input:focus,.profile-stage textarea:focus{border-color:var(--whatsapp);box-shadow:0 0 0 3px color-mix(in oklab,var(--whatsapp) 15%,transparent)}
+.profile-stage input::placeholder,.profile-stage textarea::placeholder{color:var(--muted-foreground)}
+.profile-stage .question-actions{width:100%;margin-top:20px!important}
+.result-intro .result-text strong{color:var(--foreground)}
+.diagnostic-action small{display:block;color:color-mix(in oklab,var(--background) 72%,transparent);font-size:11px;margin-top:13px}
+@media(max-width:600px){.profile-stage{align-items:flex-start}.profile-stage form{margin-top:24px}.profile-stage input,.profile-stage textarea{font-size:16px}.profile-stage .question-actions{gap:8px}.profile-stage .question-actions button{min-width:0;padding-inline:12px}}

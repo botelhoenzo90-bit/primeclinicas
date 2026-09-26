@@ -30,6 +30,7 @@ const images = [dep1,dep2,dep3,dep4,dep5,dep6,dep7,dep8,dep9,dep10,dep11,dep12,d
 const audios = [newestAudio.url,audio1.url,audio2.url];
 
 type Answers = Record<number,string[]>;
+type ClinicProfile = { name:string; clinic:string; area:string; context:string };
 type Question = { kicker:string; title:string; subtitle:string; options:string[]; multi?:boolean };
 
 const questions:Question[] = [
@@ -76,10 +77,10 @@ const diagnostic = (answers:Answers) => {
  };
 };
 
-const waLink = (answers:Answers) => {
+const waLink = (answers:Answers, profile:ClinicProfile) => {
  const d = diagnostic(answers);
- const summary = Object.entries(answers).map(([i,v]) => `Etapa ${Number(i)+1}: ${v.join(", ")}`).join("\n");
- return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá! Fiz o Diagnóstico Prime Clínicas e quero entender como melhorar minha clínica.\n\nPrioridade identificada: ${d.focus}\n\nMinhas respostas:\n${summary}`)}`;
+  const summary = questions.map((question,i) => `${question.kicker} — ${question.title}\n${(answers[i]??[]).join("; ") || "Não informado"}`).join("\n\n");
+  return `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá, Prime! Meu nome é ${profile.name.trim()} e fiz o diagnóstico da minha clínica. Quero conversar sobre um plano para melhorar meus resultados.\n\nClínica: ${profile.clinic.trim()}\nÁrea de atuação: ${profile.area.trim()}\nComo funciona hoje: ${profile.context.trim()}\n\nPonto de partida indicado: ${d.tag} — ${d.focus}\n\nMinhas respostas e dores:\n${summary}\n\nPodem analisar esse cenário comigo e me orientar sobre os próximos passos para conquistar mais confiança, agendamentos e previsibilidade?`)}`;
 };
 
 export const Route = createFileRoute("/")({
@@ -100,18 +101,20 @@ export const Route = createFileRoute("/")({
 function ClinicQuiz(){
  const [stage,setStage]=useState(0);
   useEffect(()=>{window.scrollTo({top:0,behavior:"instant"})},[stage]);
+  const [profile,setProfile]=useState<ClinicProfile>({name:"",clinic:"",area:"",context:""});
  const [answers,setAnswers]=useState<Answers>({});
  const [selected,setSelected]=useState<string[]>([]);
  const [analyzing,setAnalyzing]=useState(false);
  const [analysisStep,setAnalysisStep]=useState(0);
  const questionCount=questions.length;
- const proofStage=questionCount+1;
- const resultStage=questionCount+2;
+  const firstQuestionStage=3;
+  const proofStage=questionCount+firstQuestionStage;
+  const resultStage=proofStage+1;
  useEffect(()=>{if(!analyzing)return;setAnalysisStep(0);const ticks=[window.setTimeout(()=>setAnalysisStep(1),1100),window.setTimeout(()=>setAnalysisStep(2),2300),window.setTimeout(()=>setAnalyzing(false),3700)];return ()=>ticks.forEach(window.clearTimeout)},[analyzing]);
- const qIndex=stage>=1&&stage<=questionCount?stage-1:-1;
+  const qIndex=stage>=firstQuestionStage&&stage<proofStage?stage-firstQuestionStage:-1;
  const current=qIndex>=0?questions[qIndex]:null;
  const result=useMemo(()=>diagnostic(answers),[answers]);
- const progress=stage===0?0:stage<=questionCount?stage/resultStage:stage===proofStage?.82:1;
+  const progress=stage===0?0:stage<resultStage?stage/resultStage:1;
   const opportunities=useMemo(()=>{
     const all=Object.values(answers).flat();
     const attention=(terms:string[])=>terms.some(term=>all.includes(term));
@@ -125,7 +128,11 @@ function ClinicQuiz(){
   },[answers]);
  const continueQuestion=()=>{if(!selected.length)return;setAnswers(prev=>({...prev,[qIndex]:selected}));setSelected([]);setStage(stage+1)};
  const showResult=()=>{setAnalyzing(true);setStage(resultStage)};
- const back=()=>{if(stage===1){setStage(0);return}if(stage>=2&&stage<=questionCount){setSelected(answers[stage-2]??[]);setStage(stage-1);return}setStage(Math.max(0,stage-1))};
+  const back=()=>{if(stage>firstQuestionStage&&stage<=proofStage){setSelected(answers[stage-firstQuestionStage-1]??[])}setStage(Math.max(0,stage-1))};
+  const updateProfile=(key:keyof ClinicProfile,value:string)=>setProfile(prev=>({...prev,[key]:value}));
+  const firstName=profile.name.trim().split(/\s+/)[0] || "Você";
+  const clinicName=profile.clinic.trim() || "sua clínica";
+  const contactLink=waLink(answers,profile);
  return <main className="prime-quiz min-h-svh">
   {stage===0&&<section className="prime-opening">
    <div className="opening-logo"><img src={logoPrime.url} alt="Prime"/></div>
@@ -135,7 +142,7 @@ function ClinicQuiz(){
      <h1>Sua clínica está <em>perdendo oportunidades</em> sem você perceber?</h1>
      <p>Descubra os principais gargalos da sua clínica e veja o que pode ser melhorado para <strong>atrair mais pacientes, passar mais confiança e transformar contatos em agendamentos.</strong></p>
      <div className="opening-points"><span><Check/> Analisa sua realidade</span><span><Check/> Identifica gargalos</span><span><Check/> Mostra soluções</span></div>
-      <Button onClick={()=>setStage(1)} className="opening-cta">Começar meu diagnóstico gratuito <ArrowRight/></Button>
+       <Button onClick={()=>setStage(1)} className="opening-cta">Começar meu diagnóstico gratuito <ArrowRight/></Button>
      <div className="opening-social">
          <div className="mini-avatars" aria-hidden="true">{[0,1,2,3,4].map(i=><span key={i}><img className={`avatar-image-${i}`} src={clinicProfessionals} alt="" width={1500} height={512}/></span>)}</div>
         <div><strong>Para profissionais da saúde</strong><span>Descubra onde sua clínica pode evoluir.</span></div>
@@ -149,6 +156,8 @@ function ClinicQuiz(){
    <div className="opening-bottom"><span>✓ Gratuito</span><span>✓ Leva poucos minutos</span><span>✓ Resultado personalizado</span></div>
   </section>}
   {stage>0&&<div className="quiz-progress-wrap"><img className="progress-logo" src={logoPrime.url} alt="Prime"/><div className="quiz-progress"><span style={{width:`${Math.max(5,progress*100)}%`}}/></div><b>{Math.round(progress*100)}%</b></div>}
+   {stage===1&&<section className="question-stage profile-stage"><div className="question-center"><span className="profile-kicker">ANTES DE COMEÇAR</span><h2>Primeiro, como podemos chamar você?</h2><p className="question-sub">Vamos usar seu nome para apresentar uma leitura mais próxima da realidade da sua clínica.</p><form onSubmit={e=>{e.preventDefault();if(profile.name.trim())setStage(2)}}><label htmlFor="visitor-name">Seu nome</label><input id="visitor-name" type="text" autoComplete="name" maxLength={80} required value={profile.name} onChange={e=>updateProfile("name",e.target.value)} placeholder="Como você se chama?"/><div className="question-actions"><Button type="button" variant="ghost" onClick={back}><ArrowLeft/> Voltar</Button><Button type="submit" disabled={!profile.name.trim()}>Continuar <ArrowRight/></Button></div></form></div></section>}
+   {stage===2&&<section className="question-stage profile-stage"><div className="question-center"><span className="profile-kicker">SOBRE SUA CLÍNICA</span><h2>{firstName}, conte um pouco sobre a sua clínica.</h2><p className="question-sub">Sua área e a rotina de hoje ajudam a contextualizar as prioridades do diagnóstico.</p><form onSubmit={e=>{e.preventDefault();if(profile.clinic.trim()&&profile.area.trim()&&profile.context.trim())setStage(firstQuestionStage)}}><label htmlFor="clinic-name">Nome da clínica</label><input id="clinic-name" type="text" maxLength={100} required value={profile.clinic} onChange={e=>updateProfile("clinic",e.target.value)} placeholder="Nome da sua clínica"/><label htmlFor="clinic-area">Área de atuação</label><input id="clinic-area" type="text" maxLength={100} required value={profile.area} onChange={e=>updateProfile("area",e.target.value)} placeholder="Ex.: odontologia, dermatologia, clínica médica"/><label htmlFor="clinic-context">Como sua clínica funciona hoje?</label><textarea id="clinic-context" maxLength={500} required rows={4} value={profile.context} onChange={e=>updateProfile("context",e.target.value)} placeholder="Conte brevemente sobre seus atendimentos, equipe, agenda e como os pacientes chegam até vocês."/><div className="question-actions"><Button type="button" variant="ghost" onClick={back}><ArrowLeft/> Voltar</Button><Button type="submit" disabled={!profile.clinic.trim()||!profile.area.trim()||!profile.context.trim()}>Começar perguntas <ArrowRight/></Button></div></form></div></section>}
   {current&&<section className="question-stage">
     
     <div className="question-center"><h2>{current.title}</h2><p className="question-sub">{current.subtitle}</p>
@@ -175,23 +184,23 @@ function ClinicQuiz(){
    {stage===resultStage&&analyzing&&<section className="analysis-stage" role="status" aria-live="polite">
      <div className="analysis-symbol"><Search aria-hidden="true"/></div>
      <span className="analysis-eyebrow">DIAGNÓSTICO PRIME CLÍNICAS</span>
-     <h2>{["Lendo as respostas da sua clínica...","Identificando oportunidades para sua agenda...","Organizando os próximos passos para crescer..."][analysisStep]}</h2>
-     <p>Uma leitura inicial das prioridades que você indicou.</p>
+      <h2>{[`Lendo as respostas de ${clinicName}...`,`Identificando oportunidades para sua área de atuação...`,`Organizando os próximos passos para ${firstName}...`][analysisStep]}</h2>
+      <p>Uma leitura inicial das prioridades que você indicou para a clínica.</p>
      <div className="analysis-progress" aria-hidden="true"><span/></div>
      <div className="analysis-steps"><span className="done">Respostas</span><span className={analysisStep>=1?"done":""}>Oportunidades</span><span className={analysisStep>=2?"done":""}>Plano de ação</span></div>
    </section>}
    {stage===resultStage&&!analyzing&&<section className="diagnostic-result">
-      <header className="result-intro"><span className="result-kicker">SEU DIAGNÓSTICO / {result.tag}</span><h2>Sua clínica não precisa aceitar uma agenda abaixo do seu potencial.</h2><p className="result-text">{result.title} {result.text}</p><div className="result-focus"><span>COMECE POR AQUI</span><strong>{result.focus}</strong></div></header>
+       <header className="result-intro"><span className="result-kicker">{firstName}, SEU DIAGNÓSTICO ESTÁ PRONTO</span><h2>{firstName}, {clinicName} pode ser escolhida antes da concorrência. Comece pelos pontos que seguram seus agendamentos.</h2><p className="result-text">Na área de {profile.area.trim()}, ser encontrado, transmitir confiança e transformar interesse em consultas faz diferença. Pelas suas respostas, <strong>{result.title}</strong> {result.text}</p><div className="result-focus"><span>PRIMEIRO MOVIMENTO PARA {clinicName.toLocaleUpperCase("pt-BR")}</span><strong>{result.focus}</strong></div></header>
       <div className="diagnostic-dashboard"><div className="dashboard-title"><span>01 / SEU MAPA DE OPORTUNIDADES</span><strong>O que sua clínica pode melhorar agora</strong><p>Leitura das suas respostas, não uma medição de desempenho. As áreas destacadas refletem o que você apontou como prioridade.</p></div><div className="priority-chart" role="img" aria-label="Mapa qualitativo de prioridades indicadas pelas respostas">
       {opportunities.map(({label,detail,priority})=><div className={`chart-row ${priority?"is-priority":""}`} key={label}><div className="chart-label"><strong>{label}</strong><small>{detail}</small></div><div className="chart-track"><span className={priority?"marked":""}/></div><b>{priority?"Prioridade indicada":"Para avaliar"}</b></div>)}
       </div><div className="chart-key"><span><i/> Suas prioridades</span><span><i/> Outras áreas para avaliar</span></div></div>
       <div className="result-section-heading"><span>02 / O QUE MUDAR</span><h3>Não deixe a concorrência ser a escolha mais fácil.</h3><p>Entre a primeira busca e a consulta, cada etapa precisa fazer o paciente encontrar, confiar e agendar com a sua clínica.</p></div>
       <div className="improvement-grid"><article className="improvement-card problem"><span>O QUE PODE ESTAR CUSTANDO AGENDAMENTOS</span><h3>Se a jornada falha, a agenda sente.</h3><ul><li>Quem procura atendimento encontra outra clínica primeiro.</li><li>Uma apresentação fraca não transmite a confiança que o seu trabalho merece.</li><li>O interesse chega, mas a conversa não vira agendamento.</li><li>Depender só de indicações dificulta planejar o crescimento.</li></ul></article><article className="improvement-card solution"><span>COMO VIRAR ESSE JOGO</span><h3>Uma estrutura para atrair e converter melhor.</h3><ul><li><b>Site profissional</b> para apresentar seus diferenciais e facilitar o contato.</li><li><b>Google e presença local</b> para aparecer na hora da procura.</li><li><b>Campanhas direcionadas</b> para abrir novas conversas.</li><li><b>Atendimento organizado</b> para conduzir o interesse até a agenda.</li></ul></article></div>
-      <div className="solution-stack"><div className="result-section-heading"><span>03 / SEU CAMINHO PARA CRESCER</span><h3>Da busca pela clínica ao paciente na agenda.</h3><p>Não é sobre fazer mais ações soltas. É sobre conectar cada etapa para que o próximo paciente saiba por que escolher você.</p></div><div className="solution-grid">{[[Globe2,"Inspire confiança","Mostre o valor da sua clínica com um site claro e profissional."],[Search,"Seja encontrado","Apareça no Google quando pacientes procurarem atendimento."],[Target,"Atraia demanda","Alcance pessoas certas com campanhas bem direcionadas."],[MessageCircle,"Converta conversas","Facilite o contato e conduza até o agendamento."],[Zap,"Cresça com direção","Acompanhe oportunidades e ajuste o que realmente importa."]].map(([Icon,title,text],i)=>{const I=Icon as typeof Globe2;return <article className="solution-row" key={title as string}><span><I/></span><small>PASSO 0{i+1}</small><strong>{title as string}</strong><p>{text as string}</p></article>})}</div></div>
-      <div className="diagnostic-action"><span>SUA AGENDA PODE TER UM NOVO CAPÍTULO</span><h3>O próximo paciente pode escolher sua clínica. <em>Faça com que ele encontre motivos para isso.</em></h3><p>Mostre suas prioridades para a Prime e descubra por onde começar a fortalecer sua presença, conquistar confiança e gerar mais agendamentos.</p><Button asChild><a href={waLink(answers)} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Quero melhorar minha clínica agora <ArrowRight/></a></Button></div>
+       <div className="solution-stack"><div className="result-section-heading"><span>03 / DA OPORTUNIDADE AO AGENDAMENTO</span><h3>Faça sua clínica aparecer, convencer e agendar — antes que o paciente escolha a concorrência.</h3><p>Para {clinicName}, o caminho começa pelo que você apontou como prioridade. Estas frentes ajudam a construir confiança, aumentar a procura e transformar contatos em consultas com mais consistência.</p></div><div className="solution-grid">{[[Globe2,"Mostre por que escolher você","Um site profissional apresenta sua especialidade, seus diferenciais e um caminho claro para agendar."],[Search,"Apareça na hora da procura","Presença no Google para que pacientes da sua região encontrem a clínica quando buscarem atendimento."],[Target,"Gere novas oportunidades","Campanhas direcionadas para alcançar pessoas com interesse real nos seus serviços."],[MessageCircle,"Não perca o contato","Organize o atendimento para responder com clareza, gerar confiança e facilitar o agendamento."],[TrendingUp,"Construa previsibilidade","Acompanhe de onde vêm os contatos e ajuste as ações para depender menos do acaso."]].map(([Icon,title,text],i)=>{const I=Icon as typeof Globe2;return <article className="solution-row" key={title as string}><span><I/></span><small>PASSO 0{i+1}</small><strong>{title as string}</strong><p>{text as string}</p></article>})}</div></div>
+       <div className="diagnostic-action"><span>SEU PRÓXIMO PASSO É UMA CONVERSA</span><h3>{firstName}, <em>não deixe as oportunidades de {clinicName} irem para a concorrência.</em></h3><p>Seu diagnóstico é um ponto de partida, não uma avaliação definitiva. Toque no botão: sua mensagem já vai com seu nome, área, contexto e todas as respostas. A Prime poderá entender seu cenário e conversar com você sobre as estratégias mais importantes para conquistar confiança, mais agendamentos e previsibilidade.</p><Button asChild><a href={contactLink} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Enviar meu diagnóstico e falar com a Prime <ArrowRight/></a></Button><small>Confira a mensagem no WhatsApp antes de enviar.</small></div>
       <div className="result-vsl"><div className="vsl-heading"><span className="opening-eyebrow">APRESENTAÇÃO PRIME</span><h3>Entenda como as peças se conectam.</h3><p>Veja a estratégia por trás de uma presença que atrai, transmite confiança e facilita novos agendamentos.</p></div><div className="vsl-box">{createElement("wistia-player",{"media-id":"lz02wotjxg",aspect:"0.5625",style:{display:"block",width:"100%",height:"100%"}})}</div></div>
-      <div className="final-contact"><div><span>VAMOS CONVERSAR?</span><h3>O próximo passo da sua clínica começa com uma conversa.</h3><p>Compartilhe suas respostas e descubra o que priorizar primeiro.</p></div><Button asChild><a href={waLink(answers)} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Falar com a Prime <ArrowRight/></a></Button></div>
-      <Button variant="ghost" className="restart" onClick={()=>{setAnswers({});setSelected([]);setStage(0)}}>Refazer diagnóstico</Button>
+       <div className="final-contact"><div><span>VAMOS TRANSFORMAR ESSE DIAGNÓSTICO EM UM PLANO?</span><h3>{firstName}, dê o próximo passo para {clinicName} crescer com mais direção.</h3><p>Envie a mensagem preparada com suas respostas. A conversa com a Prime é o próximo passo para definir o que priorizar.</p></div><Button asChild><a href={contactLink} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Enviar minhas respostas <ArrowRight/></a></Button></div>
+       <Button variant="ghost" className="restart" onClick={()=>{setProfile({name:"",clinic:"",area:"",context:""});setAnswers({});setSelected([]);setStage(0)}}>Refazer diagnóstico</Button>
   </section>}
   {stage>0&&stage<resultStage&&<nav className="bottom-nav"><button onClick={back}><ArrowLeft/> Voltar</button><span>Diagnóstico estratégico para clínicas</span></nav>}
  </main>
