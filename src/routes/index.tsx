@@ -30,136 +30,6 @@ type Answers = Record<number,string[]>;
 type Question = { kicker:string; title:string; subtitle:string; options:string[]; multi?:boolean };
 
 const questions:Question[] = [
- {kicker:"Momento da clínica",title:"Em qual momento sua clínica está hoje?",subtitle:"Isso ajuda a interpretar seu diagnóstico dentro do estágio atual.",options:["Estou estruturando a clínica","Já tenho uma operação funcionando","Tenho uma agenda consistente, mas quero crescer","Minha clínica está crescendo e quero escalar"]},
- {kicker:"Agenda",title:"O que mais incomoda você hoje na sua agenda?",subtitle:"Pode selecionar mais de uma opção.",multi:true,options:["Tenho horários vazios","Quero mais pacientes novos","Minha agenda depende de indicação","Tenho demanda, mas não consigo manter previsibilidade"]},
- {kicker:"Aquisição",title:"De onde vêm a maioria dos seus pacientes hoje?",subtitle:"Selecione todas as fontes que fazem parte da sua realidade.",multi:true,options:["Indicação","Instagram","Google","Tráfego pago","WhatsApp","Convênios"]},
- {kicker:"Google & presença",title:"Quando alguém procura sua clínica na internet, o que você gostaria que acontecesse?",subtitle:"Selecione tudo que faria diferença para você.",multi:true,options:["Ser encontrado no Google","Passar mais confiança antes do contato","Aparecer à frente de concorrentes","Ter um site que apresente bem a clínica"]},
- {kicker:"Conversão",title:"Onde você sente que pode estar perdendo pacientes?",subtitle:"Escolha os pontos que mais parecem com sua realidade.",multi:true,options:["A pessoa chama e não agenda","Recebemos poucos contatos qualificados","Não temos um processo comercial claro","O paciente não encontra informações suficientes"]},
- {kicker:"Atendimento",title:"Quanto tempo sua equipe normalmente leva para responder um novo contato?",subtitle:"A velocidade do primeiro atendimento também faz parte da experiência do paciente.",options:["Imediatamente","Até 5 minutos","Até 30 minutos","Algumas horas","No mesmo dia","Às vezes só no dia seguinte"]},
- {kicker:"Estrutura",title:"Como está a estrutura digital da sua clínica hoje?",subtitle:"Isso ajuda a encontrar as próximas oportunidades.",multi:true,options:["Site profissional","Tráfego pago","Google / SEO","Sistema de agendamento","Scripts ou processo de vendas","Nenhuma estrutura consistente"]},
- {kicker:"Crescimento",title:"O que você gostaria de conseguir nos próximos meses?",subtitle:"Escolha suas principais metas.",multi:true,options:["Lotar mais a agenda","Escalar a clínica com previsibilidade","Aumentar o valor percebido dos serviços","Sair na frente da concorrência"]},
- {kicker:"Prioridade",title:"Se pudesse resolver apenas uma coisa primeiro, qual seria?",subtitle:"Escolha a prioridade que mais impactaria sua clínica hoje.",options:["Gerar mais pacientes","Transformar contatos em agendamentos","Posicionar melhor a clínica","Criar uma estrutura para escalar"]},
-];port { createFileRoute } from "@tanstack/react-router";
-import { createElement, useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, ChevronRight, Globe2, MessageCircle, Play, Search, Target, TrendingUp, Zap, BarChart3, ShieldCheck, Clock3, Users, Smartphone, Newspaper } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import clinicImage from "@/assets/clinic-reception.jpg";
-import logoPrime from "@/assets/logo-prime-v2.png.asset.json";
-import whatsappLogo from "@/assets/whatsapp-logo.png.asset.json";
-import dep1 from "@/assets/testimonials/depoimento-1.jpeg.asset.json";
-import dep2 from "@/assets/testimonials/depoimento-2.jpeg.asset.json";
-import dep3 from "@/assets/testimonials/depoimento-3.jpeg.asset.json";
-import dep4 from "@/assets/testimonials/depoimento-4.jpeg.asset.json";
-import dep5 from "@/assets/testimonials/depoimento-5.jpeg.asset.json";
-import dep6 from "@/assets/testimonials/depoimento-6.jpeg.asset.json";
-import dep7 from "@/assets/testimonials/depoimento-7.jpeg.asset.json";
-import dep8 from "@/assets/testimonials/depoimento-8.jpeg.asset.json";
-import dep9 from "@/assets/testimonials/depoimento-9.jpeg.asset.json";
-import dep10 from "@/assets/testimonials/depoimento-10.jpeg.asset.json";
-import dep11 from "@/assets/testimonials/depoimento-11.png.asset.json";
-import dep12 from "@/assets/testimonials/depoimento-12.png.asset.json";
-import dep13 from "@/assets/testimonials/depoimento-13.png.asset.json";
-import newestAudio from "@/assets/testimonials/depoimento-audio-novo.ogg.asset.json";
-import audio1 from "@/assets/testimonials/audio-1.ogg.asset.json";
-import audio2 from "@/assets/testimonials/audio-2.ogg.asset.json";
-
-const WHATSAPP = "5542999787035";
-const images = [dep1,dep2,dep3,dep4,dep5,dep6,dep7,dep8,dep9,dep10,dep11,dep12,dep13].map(x => x.url);
-const audios = [newestAudio.url,audio1.url,audio2.url];
-
-type Answers = Record<number,string[]>;
-type Question = { kicker:string; title:string; subtitle:string; options:string[]; multi?:boolean };
-
-const questions:Question[] = [
- {kicker:"Agenda",title:"O que mais incomoda você hoje na sua agenda?",subtitle:"Pode selecionar mais de uma opção.",multi:true,options:["Tenho horários vazios","Quero mais pacientes novos","Minha agenda depende de indicação","Tenho demanda, mas não consigo manter previsibilidade"]},
- {kicker:"Google & presença",title:"Quando alguém procura sua clínica na internet, o que você gostaria que acontecesse?",subtitle:"Selecione tudo que faria diferença para você.",multi:true,options:["Ser encontrado no Google","Passar mais confiança antes do contato","Aparecer à frente de concorrentes","Ter um site que apresente bem a clínica"]},
- {kicker:"Conversão",title:"Onde você sente que pode estar perdendo pacientes?",subtitle:"Escolha os pontos que mais parecem com sua realidade.",multi:true,options:["A pessoa chama e não agenda","Recebemos poucos contatos qualificados","Não temos um processo comercial claro","O paciente não encontra informações suficientes"]},
- {kicker:"Crescimento",title:"O que você gostaria de conseguir nos próximos meses?",subtitle:"Escolha suas principais metas.",multi:true,options:["Lotar mais a agenda","Escalar a clínica com previsibilidade","Aumentar o valor percebido dos serviços","Sair na frente da concorrência"]},
- {kicker:"Estrutura",title:"Quais dessas estruturas sua clínica já possui?",subtitle:"Não existe resposta certa. Isso ajuda a identificar as próximas oportunidades.",multi:true,options:["Site profissional","Tráfego pago","Google / SEO","Sistema de agendamento","Scripts ou processo de vendas","Nenhuma estrutura consistente"]},
- {kicker:"Prioridade",title:"Se pudesse resolver apenas uma coisa primeiro, qual seria?",subtitle:"Escolha a prioridade que mais impactaria sua clínica hoje.",options:["Gerar mais pacientes","Transformar contatos em agendamentos","Posicionar melhor a clínica","Criar uma estrutura para escalar"]},
-];
-
-const diagnostic = (answers:Answers) => {
- const all = Object.values(answers).flat();
- const has = (x:string) => all.includes(x);
- if(has("A pessoa chama e não agenda") || has("Não temos um processo comercial claro") || has("Algumas horas") || has("No mesmo dia") || has("Às vezes só no dia seguinte")) return {tag:"Conversão",title:"Seu maior espaço de crescimento pode estar entre o interesse e o agendamento.",text:"O paciente pode chegar até sua clínica e ainda assim existir atrito na etapa seguinte. Atendimento, informação, processo comercial e agendamento precisam trabalhar juntos.",focus:"Melhorar a jornada do contato até o agendamento."};
- if(has("Ser encontrado no Google") || has("Recebemos poucos contatos qualificados") || has("Google") || has("Instagram")) return {tag:"Visibilidade",title:"Existe uma oportunidade de tornar sua clínica mais encontrável e relevante.",text:"Uma presença digital consistente ajuda a clínica a aparecer para pessoas que já procuram soluções e a transmitir confiança antes do primeiro contato.",focus:"Aumentar visibilidade e percepção de valor."};
- if(has("Tenho horários vazios") || has("Gerar mais pacientes") || has("Lotar mais a agenda")) return {tag:"Demanda",title:"O próximo passo é construir uma fonte mais previsível de novas oportunidades.",text:"Agenda cheia não depende de uma única ação. Posicionamento, aquisição, conversão e agendamento precisam formar uma jornada.",focus:"Criar uma estrutura de aquisição e conversão."};
- if(has("Escalar a clínica com previsibilidade") || has("Criar uma estrutura para escalar")) return {tag:"Escala",title:"Para escalar, sua clínica precisa transformar marketing e atendimento em processo.",text:"Quando cada etapa tem uma função — posicionar, atrair, converter e acompanhar — o crescimento pode ser estruturado de forma mais consistente.",focus:"Construir uma estrutura integrada de crescimento."};
- return {tag:"Estratégia",title:"Sua clínica tem espaço para transformar presença digital em uma estrutura de crescimento.",text:"O diagnóstico indica oportunidades em posicionamento, aquisição e conversão. O próximo passo é entender quais ajustes têm maior impacto no seu cenário.",focus:"Definir prioridades e um plano de ação sob medida."};
-};port { createFileRoute } from "@tanstack/react-router";
-import { createElement, useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, ChevronRight, Globe2, MessageCircle, Play, Search, Target, TrendingUp, Zap, BarChart3, ShieldCheck, Clock3, Users, Smartphone, Newspaper } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import clinicImage from "@/assets/clinic-reception.jpg";
-import logoPrime from "@/assets/logo-prime-v2.png.asset.json";
-import whatsappLogo from "@/assets/whatsapp-logo.png.asset.json";
-import dep1 from "@/assets/testimonials/depoimento-1.jpeg.asset.json";
-import dep2 from "@/assets/testimonials/depoimento-2.jpeg.asset.json";
-import dep3 from "@/assets/testimonials/depoimento-3.jpeg.asset.json";
-import dep4 from "@/assets/testimonials/depoimento-4.jpeg.asset.json";
-import dep5 from "@/assets/testimonials/depoimento-5.jpeg.asset.json";
-import dep6 from "@/assets/testimonials/depoimento-6.jpeg.asset.json";
-import dep7 from "@/assets/testimonials/depoimento-7.jpeg.asset.json";
-import dep8 from "@/assets/testimonials/depoimento-8.jpeg.asset.json";
-import dep9 from "@/assets/testimonials/depoimento-9.jpeg.asset.json";
-import dep10 from "@/assets/testimonials/depoimento-10.jpeg.asset.json";
-import dep11 from "@/assets/testimonials/depoimento-11.png.asset.json";
-import dep12 from "@/assets/testimonials/depoimento-12.png.asset.json";
-import dep13 from "@/assets/testimonials/depoimento-13.png.asset.json";
-import newestAudio from "@/assets/testimonials/depoimento-audio-novo.ogg.asset.json";
-import audio1 from "@/assets/testimonials/audio-1.ogg.asset.json";
-import audio2 from "@/assets/testimonials/audio-2.ogg.asset.json";
-
-const WHATSAPP = "5542999787035";
-const images = [dep1,dep2,dep3,dep4,dep5,dep6,dep7,dep8,dep9,dep10,dep11,dep12,dep13].map(x => x.url);
-const audios = [newestAudio.url,audio1.url,audio2.url];
-
-type Answers = Record<number,string[]>;
-type Question = { kicker:string; title:string; subtitle:string; options:string[]; multi?:boolean };
-
-const questions:Question[] = [
- {kicker:"Momento da clínica",title:"Em qual momento sua clínica está hoje?",subtitle:"Isso ajuda a interpretar seu diagnóstico dentro do estágio atual.",options:["Estou estruturando a clínica","Já tenho uma operação funcionando","Tenho uma agenda consistente, mas quero crescer","Minha clínica está crescendo e quero escalar"]},
- {kicker:"Agenda",title:"O que mais incomoda você hoje na sua agenda?",subtitle:"Pode selecionar mais de uma opção.",multi:true,options:["Tenho horários vazios","Quero mais pacientes novos","Minha agenda depende de indicação","Tenho demanda, mas não consigo manter previsibilidade"]},
- {kicker:"Aquisição",title:"De onde vêm a maioria dos seus pacientes hoje?",subtitle:"Selecione todas as fontes que fazem parte da sua realidade.",multi:true,options:["Indicação","Instagram","Google","Tráfego pago","WhatsApp","Convênios"]},
- {kicker:"Google & presença",title:"Quando alguém procura sua clínica na internet, o que você gostaria que acontecesse?",subtitle:"Selecione tudo que faria diferença para você.",multi:true,options:["Ser encontrado no Google","Passar mais confiança antes do contato","Aparecer à frente de concorrentes","Ter um site que apresente bem a clínica"]},
- {kicker:"Conversão",title:"Onde você sente que pode estar perdendo pacientes?",subtitle:"Escolha os pontos que mais parecem com sua realidade.",multi:true,options:["A pessoa chama e não agenda","Recebemos poucos contatos qualificados","Não temos um processo comercial claro","O paciente não encontra informações suficientes"]},
- {kicker:"Atendimento",title:"Quanto tempo sua equipe normalmente leva para responder um novo contato?",subtitle:"A velocidade do primeiro atendimento também faz parte da experiência do paciente.",options:["Imediatamente","Até 5 minutos","Até 30 minutos","Algumas horas","No mesmo dia","Às vezes só no dia seguinte"]},
- {kicker:"Estrutura",title:"Como está a estrutura digital da sua clínica hoje?",subtitle:"Isso ajuda a encontrar as próximas oportunidades.",multi:true,options:["Site profissional","Tráfego pago","Google / SEO","Sistema de agendamento","Scripts ou processo de vendas","Nenhuma estrutura consistente"]},
- {kicker:"Crescimento",title:"O que você gostaria de conseguir nos próximos meses?",subtitle:"Escolha suas principais metas.",multi:true,options:["Lotar mais a agenda","Escalar a clínica com previsibilidade","Aumentar o valor percebido dos serviços","Sair na frente da concorrência"]},
- {kicker:"Prioridade",title:"Se pudesse resolver apenas uma coisa primeiro, qual seria?",subtitle:"Escolha a prioridade que mais impactaria sua clínica hoje.",options:["Gerar mais pacientes","Transformar contatos em agendamentos","Posicionar melhor a clínica","Criar uma estrutura para escalar"]},
-];port { createFileRoute } from "@tanstack/react-router";
-import { createElement, useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, ChevronRight, Globe2, MessageCircle, Play, Search, Target, TrendingUp, Zap, BarChart3, ShieldCheck, Clock3, Users, Smartphone, Newspaper } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import clinicImage from "@/assets/clinic-reception.jpg";
-import logoPrime from "@/assets/logo-prime-v2.png.asset.json";
-import whatsappLogo from "@/assets/whatsapp-logo.png.asset.json";
-import dep1 from "@/assets/testimonials/depoimento-1.jpeg.asset.json";
-import dep2 from "@/assets/testimonials/depoimento-2.jpeg.asset.json";
-import dep3 from "@/assets/testimonials/depoimento-3.jpeg.asset.json";
-import dep4 from "@/assets/testimonials/depoimento-4.jpeg.asset.json";
-import dep5 from "@/assets/testimonials/depoimento-5.jpeg.asset.json";
-import dep6 from "@/assets/testimonials/depoimento-6.jpeg.asset.json";
-import dep7 from "@/assets/testimonials/depoimento-7.jpeg.asset.json";
-import dep8 from "@/assets/testimonials/depoimento-8.jpeg.asset.json";
-import dep9 from "@/assets/testimonials/depoimento-9.jpeg.asset.json";
-import dep10 from "@/assets/testimonials/depoimento-10.jpeg.asset.json";
-import dep11 from "@/assets/testimonials/depoimento-11.png.asset.json";
-import dep12 from "@/assets/testimonials/depoimento-12.png.asset.json";
-import dep13 from "@/assets/testimonials/depoimento-13.png.asset.json";
-import newestAudio from "@/assets/testimonials/depoimento-audio-novo.ogg.asset.json";
-import audio1 from "@/assets/testimonials/audio-1.ogg.asset.json";
-import audio2 from "@/assets/testimonials/audio-2.ogg.asset.json";
-
-const WHATSAPP = "5542999787035";
-const images = [dep1,dep2,dep3,dep4,dep5,dep6,dep7,dep8,dep9,dep10,dep11,dep12,dep13].map(x => x.url);
-const audios = [newestAudio.url,audio1.url,audio2.url];
-
-type Answers = Record<number,string[]>;
-type Question = { kicker:string; title:string; subtitle:string; options:string[]; multi?:boolean };
-
-const questions:Question[] = [
  {kicker:"Agenda",title:"O que mais incomoda você hoje na sua agenda?",subtitle:"Pode selecionar mais de uma opção.",multi:true,options:["Tenho horários vazios","Quero mais pacientes novos","Minha agenda depende de indicação","Tenho demanda, mas não consigo manter previsibilidade"]},
  {kicker:"Google & presença",title:"Quando alguém procura sua clínica na internet, o que você gostaria que acontecesse?",subtitle:"Selecione tudo que faria diferença para você.",multi:true,options:["Ser encontrado no Google","Passar mais confiança antes do contato","Aparecer à frente de concorrentes","Ter um site que apresente bem a clínica"]},
  {kicker:"Conversão",title:"Onde você sente que pode estar perdendo pacientes?",subtitle:"Escolha os pontos que mais parecem com sua realidade.",multi:true,options:["A pessoa chama e não agenda","Recebemos poucos contatos qualificados","Não temos um processo comercial claro","O paciente não encontra informações suficientes"]},
@@ -216,6 +86,7 @@ export const Route = createFileRoute("/")({
   {property:"og:title",content:"Sua clínica está pronta para crescer? Faça o diagnóstico."},
   {property:"og:description",content:"Identifique oportunidades para atrair pacientes, passar confiança e transformar contatos em agendamentos."},
   {property:"og:type",content:"website"},
+   {name:"twitter:card",content:"summary_large_image"},
  ]}),
  component:ClinicQuiz,
 });
@@ -225,10 +96,14 @@ function ClinicQuiz(){
  const [answers,setAnswers]=useState<Answers>({});
  const [selected,setSelected]=useState<string[]>([]);
  useEffect(()=>{window.scrollTo({top:0,behavior:"instant"})},[stage]);
- const qIndex = stage>=1 && stage<=9 ? stage-1 : -1;
+ const questionCount = questions.length;
+  const proofStage = questionCount + 1;
+  const videoStage = questionCount + 2;
+  const resultStage = questionCount + 3;
+  const qIndex = stage>=1 && stage<=questionCount ? stage-1 : -1;
  const current = qIndex>=0 ? questions[qIndex] : null;
  const result = useMemo(()=>diagnostic(answers),[answers]);
- const progress = stage===0?0:stage<=9?stage/12:stage===10?.84:stage===11?.92:1;
+ const progress = stage===0?0:stage<=questionCount?stage/resultStage:stage===proofStage?.84:stage===videoStage?.92:1;
  const continueQuestion = () => {
    if(!selected.length) return;
    setAnswers(prev=>({...prev,[qIndex]:selected}));
@@ -237,7 +112,7 @@ function ClinicQuiz(){
  };
  const back = () => {
    if(stage===1){setStage(0);return}
-   if(stage>=2 && stage<=9){
+   if(stage>=2 && stage<=proofStage){
      const prev=answers[stage-2]??[];
      setSelected(prev);
      setStage(stage-1);
@@ -275,15 +150,15 @@ function ClinicQuiz(){
      </button>})}</div>
      <div className="question-actions"><Button variant="ghost" onClick={back}><ArrowLeft/> Voltar</Button><Button onClick={continueQuestion} disabled={!selected.length}>Continuar <ArrowRight/></Button></div>
    </section>}
-   {stage===10 && <section className="proof-stage">
+   {stage===proofStage && <section className="proof-stage">
      <div className="proof-heading"><span className="eyebrow-pill">Resultados que merecem atenção</span><h2>Veja o que muda quando uma clínica decide <em>parar de improvisar.</em></h2><p>Antes de chegar ao seu diagnóstico, veja exemplos de materiais e resultados compartilhados por clientes da Prime.</p></div>
      <div className="testimonial-marquee"><div className="testimonial-track">{[...images,...images].map((src,i)=><img key={i} src={src} alt="" />)}</div></div>
      <p className="proof-caption">Veja os resultados de quem decidiu mudar a forma como sua clínica se posiciona e atrai pacientes.</p>
      <div className="audio-row">{audios.map((src,i)=><audio key={src} controls preload="none" src={src} aria-label={`Depoimento em áudio ${i+1}`}/>)}</div>
-     <Button onClick={()=>setStage(11)} className="stage-cta">Quero ver como isso pode funcionar <ArrowRight/></Button>
+     <Button onClick={()=>setStage(videoStage)} className="stage-cta">Quero ver como isso pode funcionar <ArrowRight/></Button>
    </section>}
-   {stage===11 && <VideoStage onContinue={()=>setStage(12)}/>}
-   {stage===12 && <section className="diagnostic-result">
+   {stage===videoStage && <VideoStage onContinue={()=>setStage(resultStage)}/>}
+   {stage===resultStage && <section className="diagnostic-result">
      <div className="result-badge"><TrendingUp/></div><span className="result-kicker">SEU DIAGNÓSTICO INICIAL · {result.tag}</span>
      <h2>{result.title}</h2><p className="result-text">{result.text}</p>
      <div className="result-focus"><span>PRINCIPAL DIREÇÃO</span><strong>{result.focus}</strong></div>
@@ -300,7 +175,7 @@ function ClinicQuiz(){
      <button className="restart" onClick={()=>{setAnswers({});setSelected([]);setStage(0)}}>Refazer diagnóstico</button>
    </section>}
   </div>
-  {stage>0 && stage<12 && <nav className="bottom-nav"><button onClick={back}><ArrowLeft/> Voltar</button><span>Diagnóstico Prime · sua clínica, sua próxima oportunidade</span></nav>}
+  {stage>0 && stage<resultStage && <nav className="bottom-nav"><button onClick={back}><ArrowLeft/> Voltar</button><span>Diagnóstico Prime · sua clínica, sua próxima oportunidade</span></nav>}
  </main>
 }
 
