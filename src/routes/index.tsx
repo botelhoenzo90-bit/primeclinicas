@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createElement, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, ChevronRight, Globe2, MessageCircle, Search, Target, TrendingUp, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import clinicImage from "@/assets/clinic-reception.jpg";
+import clinicImage from "@/assets/clinica-etapa-1.png.asset.json";
 import clinicProfessionals from "@/assets/clinic-professionals.jpg";
 import logoPrime from "@/assets/logo-prime-v2.png.asset.json";
 import whatsappLogo from "@/assets/whatsapp-logo.png.asset.json";
@@ -134,7 +134,7 @@ function ClinicQuiz(){
      </div>
     </div>
     <div className="opening-visual">
-      <img src={clinicImage} alt="Ambiente profissional de clínica"/>
+       <img src={clinicImage.url} alt="Pessoas chegando a uma clínica médica"/>
       
     </div>
    </div>
