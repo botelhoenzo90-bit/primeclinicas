@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createElement, useMemo, useState } from "react";
+import { createElement, useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, ChevronRight, Globe2, MessageCircle, Search, Target, TrendingUp, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import clinicImage from "@/assets/clinica-etapa-1.png.asset.json";
@@ -99,6 +99,7 @@ export const Route = createFileRoute("/")({
 
 function ClinicQuiz(){
  const [stage,setStage]=useState(0);
+  useEffect(()=>{window.scrollTo({top:0,behavior:"instant"})},[stage]);
  const [answers,setAnswers]=useState<Answers>({});
  const [selected,setSelected]=useState<string[]>([]);
  const questionCount=questions.length;
