@@ -11,3 +11,4 @@
 
 - Keep the clinic campaign as one client-side staged quiz rather than stacked scrolling sections; visitors should see only the current step and proceed from pain to proof, strategy, and WhatsApp without storing patient or clinic data.
 - Use Wistia media ID `lz02wotjxg` and existing testimonial asset pointers without copying or altering the original media; this preserves the supplied evidence and current video.
+- Keep the diagnostic visualization qualitative rather than inventing percentage scores from quiz choices; the answers identify priorities, not measured clinic performance.

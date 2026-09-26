@@ -2,3 +2,6 @@
 - [x] Reforçar a primeira mensagem e modernizar o visual com cantos arredondados.
 - [x] Inserir depoimentos em imagem e áudio, nova VSL, estratégia e resultado no fluxo.
 - [x] Validar o fluxo, a nova VSL e o visual no celular e no computador.
+- [x] Trocar os avatares por profissionais da saúde, ajustar botão e benefícios da abertura.
+- [x] Exibir o depoimento enviado, retirar vídeos vazios e aproximar as imagens do carrossel.
+- [x] Fortalecer o resultado com prioridades qualitativas e chamadas verdes para o WhatsApp.
