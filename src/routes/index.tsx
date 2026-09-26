@@ -128,7 +128,7 @@ function ClinicQuiz(){
      <div className="opening-points"><span><Check/> Analisa sua realidade</span><span><Check/> Identifica gargalos</span><span><Check/> Mostra soluções</span></div>
      <Button onClick={()=>setStage(1)} className="opening-cta">Começar meu diagnóstico <ArrowRight/></Button>
      <div className="opening-social">
-       <div className="mini-avatars">{images.slice(0,5).map((src,i)=><img key={i} src={src} alt=""/></div>
+        <div className="mini-avatars">{images.slice(0,5).map((src,i)=><img key={i} src={src} alt=""/>)}</div>
        <div><strong>Diagnóstico personalizado</strong><span>Para clínicas que querem crescer com estratégia.</span></div>
      </div>
     </div>
@@ -158,7 +158,7 @@ function ClinicQuiz(){
   </section>}
   {stage===proofStage&&<section className="proof-stage">
     <div className="proof-heading"><span className="proof-yellow">Resultados que merecem atenção</span><h2>Veja quem decidiu mudar a forma de <em>crescer a clínica.</em></h2><p>Experiências e materiais compartilhados por clientes da Prime.</p></div>
-    <div className="testimonial-marquee proof-top-images"><div className="testimonial-track">{[...images.slice(0,8),...images.slice(0,8)].map((src,i)=><img key={i} src={src} alt="Depoimento"/></div></div>
+     <div className="testimonial-marquee proof-top-images"><div className="testimonial-track">{[...images.slice(0,8),...images.slice(0,8)].map((src,i)=><img key={i} src={src} alt="Depoimento"/>)}</div></div>
     <div className="proof-video-grid">{[1,2,3].map(i=><div className="proof-video" key={i}><div className="video-placeholder"><Play/><span>Seu vídeo de depoimento</span><small>Adicione seu vídeo aqui</small></div><strong>Depoimento {i}</strong></div>)}</div>
     <div className="proof-image-grid">{images.map((src,i)=><img key={i} src={src} alt={`Depoimento de cliente ${i+1}`}/>)}</div>
     <div className="audio-row">{audios.map((src,i)=><audio key={src} controls preload="none" src={src} aria-label={`Depoimento em áudio ${i+1}`}/>)}</div>
