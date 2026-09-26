@@ -5,3 +5,5 @@
 - [x] Trocar os avatares por profissionais da saúde, ajustar botão e benefícios da abertura.
 - [x] Exibir o depoimento enviado, retirar vídeos vazios e aproximar as imagens do carrossel.
 - [x] Fortalecer o resultado com prioridades qualitativas e chamadas verdes para o WhatsApp.
+
+- [x] Arredondar os depoimentos sem pausar o movimento e modernizar o diagnóstico com gráfico qualitativo, copy forte e análise breve.
