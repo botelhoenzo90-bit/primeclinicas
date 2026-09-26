@@ -95,95 +95,86 @@ function ClinicQuiz(){
  const [stage,setStage]=useState(0);
  const [answers,setAnswers]=useState<Answers>({});
  const [selected,setSelected]=useState<string[]>([]);
- useEffect(()=>{window.scrollTo({top:0,behavior:"instant"})},[stage]);
- const questionCount = questions.length;
-  const proofStage = questionCount + 1;
-  const videoStage = questionCount + 2;
-  const resultStage = questionCount + 3;
-  const qIndex = stage>=1 && stage<=questionCount ? stage-1 : -1;
- const current = qIndex>=0 ? questions[qIndex] : null;
- const result = useMemo(()=>diagnostic(answers),[answers]);
- const progress = stage===0?0:stage<=questionCount?stage/resultStage:stage===proofStage?.84:stage===videoStage?.92:1;
- const continueQuestion = () => {
-   if(!selected.length) return;
-   setAnswers(prev=>({...prev,[qIndex]:selected}));
-   setSelected([]);
-   setStage(stage+1);
- };
- const back = () => {
-   if(stage===1){setStage(0);return}
-   if(stage>=2 && stage<=proofStage){
-     const prev=answers[stage-2]??[];
-     setSelected(prev);
-     setStage(stage-1);
-     return;
-   }
-   setStage(stage-1);
- };
+ const questionCount=questions.length;
+ const newsStage=questionCount+1;
+ const proofStage=questionCount+2;
+ const resultStage=questionCount+3;
+ const qIndex=stage>=1&&stage<=questionCount?stage-1:-1;
+ const current=qIndex>=0?questions[qIndex]:null;
+ const result=useMemo(()=>diagnostic(answers),[answers]);
+ const progress=stage===0?0:stage<=questionCount?stage/resultStage:stage===newsStage?.72:stage===proofStage?.82:1;
+ const scores=useMemo(()=>{
+   const all=Object.values(answers).flat();
+   const score=(base:number,words:string[])=>Math.min(94,base+words.filter(x=>all.includes(x)).length*9);
+   return [
+    ["Posicionamento",score(55,["Passar mais confiança antes do contato","Aumentar o valor percebido dos serviços","Posicionar melhor a clínica"])],
+    ["Visibilidade",score(48,["Ser encontrado no Google","Aparecer à frente de concorrentes","Google / SEO"])],
+    ["Aquisição",score(45,["Quero mais pacientes novos","Tráfego pago","Gerar mais pacientes"])],
+    ["Conversão",score(42,["A pessoa chama e não agenda","Recebemos poucos contatos qualificados","Transformar contatos em agendamentos"])],
+    ["Agendamento",score(46,["Sistema de agendamento","A pessoa chama e não agenda"])],
+    ["Escala",score(40,["Escalar a clínica com previsibilidade","Criar uma estrutura para escalar"])]
+   ];
+ },[answers]);
+ const continueQuestion=()=>{if(!selected.length)return;setAnswers(prev=>({...prev,[qIndex]:selected}));setSelected([]);setStage(stage+1)};
+ const back=()=>{if(stage===1){setStage(0);return}if(stage>=2&&stage<=questionCount){setSelected(answers[stage-2]??[]);setStage(stage-1);return}setStage(Math.max(0,stage-1))};
  return <main className="prime-quiz min-h-svh">
-  <header className="quiz-header">
-   <div className="quiz-brand"><img src={logoPrime.url} alt="Prime" /><span>PRIME<span>.</span></span></div>
-   <div className="quiz-header-center"><span>Diagnóstico estratégico para clínicas</span></div>
-   <div className="quiz-secure">Confidencial · gratuito</div>
-  </header>
-  {stage>0 && <div className="quiz-progress-wrap"><div className="quiz-progress"><span style={{width:`${Math.max(4,progress*100)}%`}} /></div><b>{Math.round(progress*100)}%</b></div>}
-  <div className="quiz-container">
-   {stage===0 && <section className="hero-diagnostic">
-    <div className="hero-copy">
-      <span className="eyebrow-pill"><Zap size={14}/> Diagnóstico estratégico para médicos e donos de clínicas</span>
-      <h1>Sua clínica pode estar <em>perdendo pacientes</em> sem você perceber.</h1>
-      <p className="hero-lead">Descubra onde sua clínica está deixando oportunidades na mesa — e quais estruturas podem ajudar você a <strong>lotar a agenda, passar mais confiança e crescer com previsibilidade.</strong></p>
-      <div className="hero-benefits"><span><Check/> Analisa sua realidade</span><span><Check/> Identifica gargalos</span><span><Check/> Mostra caminhos de solução</span></div>
-      <Button onClick={()=>setStage(1)} className="hero-cta">Fazer meu diagnóstico <ArrowRight/></Button>
-      <small>Leva poucos minutos · sem compromisso · resultado personalizado</small>
-    </div>
-    <div className="hero-visual">
-      <img src={clinicImage} alt="Ambiente profissional de clínica" />
-      <div className="diagnostic-card"><span>O que vamos analisar</span><strong>Posicionamento · Google · Aquisição · Conversão · Agendamento</strong><div><TrendingUp/> Diagnóstico + direção estratégica</div></div>
-    </div>
-   </section>}
-   {current && <section className="question-stage">
-     <div className="question-top"><span>ETAPA 0{qIndex+1} <i>•</i> {current.kicker}</span><span>{current.multi?"MÚLTIPLA ESCOLHA":"ESCOLHA UMA"}</span></div>
-     <h2>{current.title}</h2><p className="question-sub">{current.subtitle}</p>
-     <div className="option-grid">{current.options.map((option,i)=>{const active=selected.includes(option);return <button type="button" key={option} className={`quiz-option ${active?"active":""}`} onClick={()=>current.multi?setSelected(s=>s.includes(option)?s.filter(x=>x!==option):[...s,option]):setSelected([option])}>
-       <span className="option-check">{active?<Check/>:String.fromCharCode(65+i)}</span><span>{option}</span><ChevronRight/>
-     </button>})}</div>
-     <div className="question-actions"><Button variant="ghost" onClick={back}><ArrowLeft/> Voltar</Button><Button onClick={continueQuestion} disabled={!selected.length}>Continuar <ArrowRight/></Button></div>
-   </section>}
-   {stage===proofStage && <section className="proof-stage">
-     <div className="proof-heading"><span className="eyebrow-pill">Resultados que merecem atenção</span><h2>Veja o que muda quando uma clínica decide <em>parar de improvisar.</em></h2><p>Antes de chegar ao seu diagnóstico, veja exemplos de materiais e resultados compartilhados por clientes da Prime.</p></div>
-     <div className="testimonial-marquee"><div className="testimonial-track">{[...images,...images].map((src,i)=><img key={i} src={src} alt="" />)}</div></div>
-     <p className="proof-caption">Veja os resultados de quem decidiu mudar a forma como sua clínica se posiciona e atrai pacientes.</p>
-     <div className="audio-row">{audios.map((src,i)=><audio key={src} controls preload="none" src={src} aria-label={`Depoimento em áudio ${i+1}`}/>)}</div>
-     <Button onClick={()=>setStage(videoStage)} className="stage-cta">Quero ver como isso pode funcionar <ArrowRight/></Button>
-   </section>}
-   {stage===videoStage && <VideoStage onContinue={()=>setStage(resultStage)}/>}
-   {stage===resultStage && <section className="diagnostic-result">
-     <div className="result-badge"><TrendingUp/></div><span className="result-kicker">SEU DIAGNÓSTICO INICIAL · {result.tag}</span>
-     <h2>{result.title}</h2><p className="result-text">{result.text}</p>
-     <div className="result-focus"><span>PRINCIPAL DIREÇÃO</span><strong>{result.focus}</strong></div>
-     <div className="diagnostic-dashboard"><div className="dashboard-title"><span>LEITURA DO SEU CENÁRIO</span><strong>Mapa inicial de oportunidades</strong></div><div className="score-grid">{[["Posicionamento",72],["Visibilidade",64],["Aquisição",58],["Conversão",46],["Agendamento",61],["Escala",52]].map(([label,value])=><div className="score-item" key={label as string}><div><span>{label as string}</span><b>{value}%</b></div><div className="score-bar"><i style={{width:(value as number)+"%"}} /></div></div>)}</div><div className="dashboard-note"><ShieldCheck/><div><strong>Como interpretar</strong><p>Estas faixas são uma leitura inicial baseada nas respostas do diagnóstico. Não são métricas de mercado nem promessa de resultado.</p></div></div></div><div className="solution-stack"><h3>Como podemos ajudar sua clínica</h3><p>Em vez de tratar cada problema isoladamente, estruturamos os pontos que fazem o paciente conhecer, confiar e agendar.</p>
-       {[
-        [Globe2,"Posicionamento e autoridade","Estratégia de marca, comunicação e presença digital para sua clínica ser percebida com mais valor."],
-        [Target,"Tráfego pago","Campanhas direcionadas para gerar novas oportunidades e colocar sua clínica diante das pessoas certas."],
-        [Search,"Google e presença digital","Site profissional e estratégias para melhorar sua presença quando o paciente pesquisa por atendimento."],
-        [Zap,"Agendamentos automáticos","Estruturas que reduzem atrito entre o interesse do paciente e o momento de marcar."],
-        [MessageCircle,"Scripts e estratégia comercial","Processos e mensagens para organizar o atendimento e aproveitar melhor cada oportunidade."],
-       ].map(([Icon,title,text])=>{const I=Icon as typeof Globe2;return <div className="solution-row" key={title as string}><span><I/></span><div><strong>{title as string}</strong><p>{text as string}</p></div><Check/></div>})}
+  {stage===0&&<section className="prime-opening">
+   <div className="opening-logo"><img src={logoPrime.url} alt="Prime"/><span>PRIME<span>.</span></span></div>
+   <div className="opening-content">
+    <div className="opening-copy">
+     <span className="opening-eyebrow">Diagnóstico estratégico para médicos e donos de clínicas</span>
+     <h1>Sua clínica está <em>perdendo oportunidades</em> sem você perceber?</h1>
+     <p>Descubra os principais gargalos da sua clínica e veja o que pode ser melhorado para <strong>atrair mais pacientes, passar mais confiança e transformar contatos em agendamentos.</strong></p>
+     <div className="opening-points"><span><Check/> Analisa sua realidade</span><span><Check/> Identifica gargalos</span><span><Check/> Mostra soluções</span></div>
+     <Button onClick={()=>setStage(1)} className="opening-cta">Começar meu diagnóstico <ArrowRight/></Button>
+     <div className="opening-social">
+       <div className="mini-avatars">{images.slice(0,5).map((src,i)=><img key={i} src={src} alt=""/></div>
+       <div><strong>Diagnóstico personalizado</strong><span>Para clínicas que querem crescer com estratégia.</span></div>
      </div>
-     <div className="final-contact"><div><span>PRÓXIMO PASSO</span><h3>Quer descobrir o que faria mais sentido para a sua clínica?</h3><p>Fale com a Prime. Vamos analisar seu cenário e mostrar onde existe oportunidade de crescimento.</p></div><Button asChild><a href={waLink(answers)} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Falar com a Prime no WhatsApp <ArrowRight/></a></Button></div>
-     <button className="restart" onClick={()=>{setAnswers({});setSelected([]);setStage(0)}}>Refazer diagnóstico</button>
-   </section>}
-  </div>
-  {stage>0 && stage<resultStage && <nav className="bottom-nav"><button onClick={back}><ArrowLeft/> Voltar</button><span>Diagnóstico Prime · sua clínica, sua próxima oportunidade</span></nav>}
+    </div>
+    <div className="opening-visual">
+      <img src={clinicImage} alt="Ambiente profissional de clínica"/>
+      <div className="opening-card"><span>RAIO-X DA CLÍNICA</span><strong>Posicionamento · Google · Aquisição · Conversão · Agendamento</strong><small><TrendingUp/> Uma análise para encontrar onde existe oportunidade.</small></div>
+    </div>
+   </div>
+   <div className="opening-bottom"><span>✓ Gratuito</span><span>✓ Leva poucos minutos</span><span>✓ Resultado personalizado</span></div>
+  </section>}
+  {stage>0&&<div className="quiz-progress-wrap"><div className="quiz-progress"><span style={{width:`${Math.max(5,progress*100)}%`}}/></div><b>{Math.round(progress*100)}%</b></div>}
+  {current&&<section className="question-stage">
+    <div className="question-top"><span>ETAPA 0{qIndex+1} <i>•</i> {current.kicker}</span><span>{current.multi?"MÚLTIPLA ESCOLHA":"ESCOLHA UMA"}</span></div>
+    <div className="question-center"><h2>{current.title}</h2><p className="question-sub">{current.subtitle}</p>
+    <div className="option-grid">{current.options.map((option,i)=>{const active=selected.includes(option);return <button type="button" key={option} className={`quiz-option ${active?"active":""}`} onClick={()=>current.multi?setSelected(v=>v.includes(option)?v.filter(x=>x!==option):[...v,option]):setSelected([option])}><span className="option-check">{active?<Check/>:String.fromCharCode(65+i)}</span><span>{option}</span><ChevronRight/></button>})}</div>
+    <div className="question-actions"><Button variant="ghost" onClick={back}><ArrowLeft/> Voltar</Button><Button onClick={continueQuestion} disabled={!selected.length}>Continuar <ArrowRight/></Button></div></div>
+  </section>}
+  {stage===newsStage&&<section className="health-news-stage">
+    <div className="news-head"><span className="opening-eyebrow">Radar do mercado de saúde</span><h2>Enquanto sua clínica cresce, <em>o comportamento do paciente também muda.</em></h2><p>Veja um contexto real antes de receber seu diagnóstico.</p></div>
+    <div className="news-grid">
+      <article><span className="news-tag">ATUALIZAÇÃO · 2026</span><h3>Agendamento online está ganhando espaço na saúde digital.</h3><p>O Ministério da Saúde publicou orientações sobre a funcionalidade de Agendamento Online integrada ao Meu SUS Digital.</p><a href="https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/notas-tecnicas/2026/nota-tecnica-conjunta-no-48-2026-seidigi-saps-ms.pdf/view" target="_blank" rel="noreferrer">Ver fonte oficial →</a></article>
+      <article><span className="news-tag">MERCADO · SEBRAE</span><h3>O mercado de clínicas apresenta oportunidades para quem consegue se diferenciar.</h3><p>O Sebrae aponta crescimento do mercado de clínicas e destaca segmentação, inovação e tecnologia entre os temas relevantes para competitividade.</p><a href="https://inteligenciademercado.rj.sebrae.com.br/multissetorial/Mercado-de-Clinicas-e-Consultorios-Medicos" target="_blank" rel="noreferrer">Ver análise →</a></article>
+      <article><span className="news-tag">SAÚDE DIGITAL · 2026</span><h3>A transformação digital está levando informação e tecnologia para mais etapas do atendimento.</h3><p>O Ministério da Saúde vem ampliando iniciativas de saúde digital, integração de dados e soluções de atendimento.</p><a href="https://www.gov.br/saude/pt-br/assuntos/noticias-ms/2026/agosto/cns-aprova-por-unanimidade-politica-nacional-de-informacao-e-saude-digital" target="_blank" rel="noreferrer">Ver notícia oficial →</a></article>
+    </div>
+    <div className="news-insight"><Zap/><div><strong>O ponto importante para sua clínica</strong><p>Não basta estar na internet. A oportunidade está em conectar presença, confiança, aquisição, conversão e agendamento.</p></div></div>
+    <Button onClick={()=>setStage(proofStage)} className="stage-cta">Continuar diagnóstico <ArrowRight/></Button>
+  </section>}
+  {stage===proofStage&&<section className="proof-stage">
+    <div className="proof-heading"><span className="proof-yellow">Resultados que merecem atenção</span><h2>Veja quem decidiu mudar a forma de <em>crescer a clínica.</em></h2><p>Experiências e materiais compartilhados por clientes da Prime.</p></div>
+    <div className="testimonial-marquee proof-top-images"><div className="testimonial-track">{[...images.slice(0,8),...images.slice(0,8)].map((src,i)=><img key={i} src={src} alt="Depoimento"/></div></div>
+    <div className="proof-video-grid">{[1,2,3].map(i=><div className="proof-video" key={i}><div className="video-placeholder"><Play/><span>Seu vídeo de depoimento</span><small>Adicione seu vídeo aqui</small></div><strong>Depoimento {i}</strong></div>)}</div>
+    <div className="proof-image-grid">{images.map((src,i)=><img key={i} src={src} alt={`Depoimento de cliente ${i+1}`}/>)}</div>
+    <div className="audio-row">{audios.map((src,i)=><audio key={src} controls preload="none" src={src} aria-label={`Depoimento em áudio ${i+1}`}/>)}</div>
+    <Button onClick={()=>setStage(resultStage)} className="stage-cta">Ver meu diagnóstico <ArrowRight/></Button>
+  </section>}
+  {stage===resultStage&&<section className="diagnostic-result">
+    <div className="result-badge"><TrendingUp/></div><span className="result-kicker">SEU RAIO-X INICIAL · {result.tag}</span><h2>{result.title}</h2><p className="result-text">{result.text}</p>
+    <div className="result-focus"><span>PRINCIPAL OPORTUNIDADE</span><strong>{result.focus}</strong></div>
+    <div className="diagnostic-dashboard"><div className="dashboard-title"><span>SEU MAPA DE CRESCIMENTO</span><strong>Onde sua clínica pode evoluir</strong></div><div className="score-grid">{scores.map(([label,value])=><div className="score-item" key={label as string}><div><span>{label as string}</span><b>{value}%</b></div><div className="score-bar"><i style={{width:(value as number)+"%"}}/></div>)}</div></div>
+    <div className="improvement-grid"><div className="improvement-card problem"><span>⚠ PONTOS DE ATENÇÃO</span><h3>O que pode estar limitando seu crescimento</h3><ul><li>Presença digital que não transmite todo o valor da clínica</li><li>Dependência de indicação ou canais pouco previsíveis</li><li>Perda de oportunidades entre contato e agendamento</li><li>Falta de uma estrutura conectando marketing e atendimento</li></ul></div><div className="improvement-card solution"><span>✓ CAMINHO DE SOLUÇÃO</span><h3>O que pode ser construído</h3><ul><li><b>Site profissional</b> para apresentar a clínica e gerar confiança</li><li><b>Google e presença digital</b> para facilitar que pacientes encontrem você</li><li><b>Tráfego pago</b> para criar novas oportunidades de aquisição</li><li><b>Agendamento e processo comercial</b> para reduzir atrito até a consulta</li></ul></div></div>
+    <div className="solution-stack"><h3>Entenda a estrutura</h3><p>Uma estratégia completa conecta os pontos abaixo em vez de tratar cada problema isoladamente.</p>{[[Globe2,"Posicionamento e autoridade","Clareza de oferta, comunicação e percepção de valor."],[Target,"Tráfego pago","Campanhas para colocar sua clínica diante das pessoas certas."],[Search,"Site profissional + Google","Uma presença digital que informa, transmite confiança e facilita o próximo passo."],[Zap,"Agendamento automático","Menos atrito entre o interesse do paciente e o agendamento."],[MessageCircle,"Scripts e estratégia comercial","Um processo para sua equipe aproveitar melhor os contatos recebidos."]].map(([Icon,title,text])=>{const I=Icon as typeof Globe2;return <div className="solution-row" key={title as string}><span><I/></span><div><strong>{title as string}</strong><p>{text as string}</p></div><Check/></div>})}</div>
+    <div className="solve-now"><span>SEU PRÓXIMO PASSO</span><h3>Quer começar a resolver esses pontos agora?</h3><p>Receba uma análise do seu cenário e entenda quais soluções fazem mais sentido para sua clínica.</p><Button asChild><a href={waLink(answers)} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Quero resolver isso com a Prime <ArrowRight/></a></Button></div>
+    <div className="result-vsl"><div className="vsl-heading"><span className="opening-eyebrow">Entenda a estrutura Prime</span><h3>Como conectar tudo isso em uma estratégia única?</h3><p>Assista à apresentação e veja como posicionamento, tráfego, site, Google, agendamento e processo comercial podem trabalhar juntos.</p></div><div className="vsl-box"><div className="vsl-label">APRESENTAÇÃO PRIME</div>{createElement("wistia-player",{"media-id":"lz02wotjxg",aspect:"0.5625",style:{display:"block",width:"100%",height:"100%",position:"relative"}})}</div></div>
+    <div className="final-contact"><div><span>ANÁLISE PERSONALIZADA</span><h3>Pronto para entender o que fazer primeiro?</h3><p>Seu diagnóstico já está pronto. Envie-o para a Prime e converse com nossa equipe pelo WhatsApp.</p></div><Button asChild><a href={waLink(answers)} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Falar com a Prime no WhatsApp <ArrowRight/></a></Button></div>
+    <button className="restart" onClick={()=>{setAnswers({});setSelected([]);setStage(0)}}>Refazer diagnóstico</button>
+  </section>}
+  {stage>0&&stage<resultStage&&<nav className="bottom-nav"><button onClick={back}><ArrowLeft/> Voltar</button><span>Raio-X Prime · diagnóstico estratégico para clínicas</span></nav>}
  </main>
-}
-
-function VideoStage({onContinue}:{onContinue:()=>void}){
- useEffect(()=>{for(const [src,module] of [["https://fast.wistia.com/player.js",false],["https://fast.wistia.com/embed/lz02wotjxg.js",true]] as const){if(document.querySelector(`script[src="${src}"]`))continue;const s=document.createElement("script");s.src=src;s.async=true;if(module)s.type="module";document.head.appendChild(s)}},[]);
- return <section className="vsl-stage">
-  <div className="vsl-copy"><span className="eyebrow-pill"><Play size={14}/> Entenda a estrutura</span><h2>Uma clínica forte não depende de uma única ação. <em>Ela conecta tudo.</em></h2><p>Assista e veja como posicionamento, tráfego pago, site profissional, Google, agendamentos automáticos, scripts de vendas e estratégia podem trabalhar juntos para criar uma jornada mais eficiente até a consulta.</p><div className="service-chips"><span>Posicionamento</span><span>Tráfego pago</span><span>Site profissional</span><span>Google</span><span>Agendamento automático</span><span>Estratégia comercial</span></div></div>
-  <div className="vsl-box"><div className="vsl-label">APRESENTAÇÃO PRIME</div>{createElement("wistia-player",{"media-id":"lz02wotjxg",aspect:"0.5625",style:{display:"block",width:"100%",height:"100%",position:"relative"}})}</div>
-  <Button onClick={onContinue} className="stage-cta">Ver meu diagnóstico <ArrowRight/></Button>
- </section>
 }
