@@ -112,7 +112,7 @@ function ClinicQuiz(){
  };
  const back = () => {
    if(stage===1){setStage(0);return}
-   if(stage>=2 && stage<=questionCount){
+   if(stage>=2 && stage<=proofStage){
      const prev=answers[stage-2]??[];
      setSelected(prev);
      setStage(stage-1);
