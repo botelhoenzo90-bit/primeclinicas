@@ -23,6 +23,7 @@ import newestAudio from "@/assets/testimonials/depoimento-audio-novo.ogg.asset.j
 import audio1 from "@/assets/testimonials/audio-1.ogg.asset.json";
 import audio2 from "@/assets/testimonials/audio-2.ogg.asset.json";
 import testimonialVideo from "@/assets/testimonials/depoimento-clinica.mp4.asset.json";
+import testimonialPoster from "@/assets/testimonials/depoimento-clinica-poster.jpg";
 
 const WHATSAPP = "5542999787035";
 const images = [dep1,dep2,dep3,dep4,dep5,dep6,dep7,dep8,dep9,dep10,dep11,dep12,dep13].map(x => x.url);
@@ -158,7 +159,7 @@ function ClinicQuiz(){
   </section>}
   {stage===proofStage&&<section className="proof-stage">
      <div className="proof-heading"><span className="proof-yellow">Histórias reais</span><h2>Quem vive a rotina de uma clínica <em>reconhece a diferença.</em></h2><p>Veja o depoimento e os relatos compartilhados com a Prime.</p></div>
-      <div className="proof-feature-video"><video controls playsInline preload="metadata" src={testimonialVideo.url} aria-label="Depoimento em vídeo de cliente da Prime"/><span>Depoimento em vídeo</span></div>
+      <div className="proof-feature-video"><video controls playsInline preload="metadata" poster={testimonialPoster} src={testimonialVideo.url} aria-label="Depoimento em vídeo de cliente da Prime"/><span>Depoimento em vídeo</span></div>
     <div className="testimonial-marquee proof-top-images"><div className="testimonial-track">{[...images,...images].map((src,i)=><img key={i} src={src} alt="Depoimento"/>)}</div></div>
     <div className="audio-row">{audios.map((src,i)=><audio key={src} controls preload="none" src={src} aria-label={`Depoimento em áudio ${i+1}`}/>)}</div>
     <Button onClick={()=>setStage(resultStage)} className="stage-cta">Ver meu diagnóstico <ArrowRight/></Button>
