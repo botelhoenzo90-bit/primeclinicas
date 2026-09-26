@@ -297,3 +297,9 @@
  .solution-stack{padding:18px}
  .final-contact .btn{width:100%}
 }
+
+.mid-whatsapp-cta{max-width:900px;margin:28px auto 0;padding:24px;border:2px solid #f0d34d;border-radius:22px;text-align:center;background:#fff}
+.mid-whatsapp-cta span{display:block;font-size:9px;letter-spacing:.13em;color:#9a7900;font-weight:950}
+.mid-whatsapp-cta strong{display:block;font-size:20px;line-height:1.3;margin:7px auto 0;max-width:650px}
+.mid-whatsapp-cta .btn{margin-top:16px;background:#20c463!important;color:#fff!important;height:52px!important;border-radius:12px!important;font-weight:950!important}
+.mid-whatsapp-cta img{width:19px;height:19px}
