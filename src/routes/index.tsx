@@ -146,9 +146,6 @@ function ClinicQuiz(){
       <div className="guide-highlights"><span><Check/> 60 estratégias completas</span><span><Check/> Exemplos e ações práticas</span><span><Check/> Checklists para aplicar</span></div>
       <div className="guide-social-proof"><div className="guide-avatars" aria-hidden="true">{[0,1,2,3,4].map(i=><span key={i}><img className={`avatar-image-${i}`} src={clinicProfessionals} alt=""/></span>)}</div><div><strong>Feito para quem vive a rotina de uma clínica</strong><span>Estratégias para crescer com mais direção e previsibilidade.</span></div></div>
     </div>
-    <div className="guide-reader">
-     <iframe src={`${growthGuide.url}#toolbar=0&navpanes=0&view=FitH`} title="Guia de Estratégias de Crescimento para Clínicas"/>
-    </div>
      <div className="guide-diagnostic-cta"><span>PRÓXIMO PASSO RECOMENDADO</span><h2>O guia mostra as estratégias. Seu diagnóstico revela <strong>o que está impedindo sua clínica de crescer agora.</strong></h2><p>Em menos de 1 minuto, identifique os pontos que podem estar fazendo sua clínica perder pacientes, agendamentos e espaço para a concorrência — e receba uma direção personalizada para começar.</p><div className="guide-cta-benefits"><span><Check/> Análise da sua realidade</span><span><Check/> Prioridades claras</span><span><Check/> Próximos passos</span></div><Button onClick={()=>setStage(0)}>Iniciar meu diagnóstico gratuito <ArrowRight/></Button><small>Leva menos de 1 minuto · resultado personalizado</small></div>
    </section>}
   {stage===0&&<section className="prime-opening">
