@@ -25,6 +25,7 @@ import audio2 from "@/assets/testimonials/audio-2.ogg.asset.json";
 import testimonialVideo from "@/assets/testimonials/depoimento-clinica.mp4.asset.json";
 import testimonialPoster from "@/assets/testimonials/depoimento-clinica-poster.jpg";
 import growthGuide from "@/assets/guia-estrategia-crescimento-clinicas.pdf.asset.json";
+import guideCover from "@/assets/capa-guia-crescimento-clinicas.png.asset.json";
 
 const WHATSAPP = "5542999787035";
 const images = [dep1,dep2,dep3,dep4,dep5,dep6,dep7,dep8,dep9,dep10,dep11,dep12,dep13].map(x => x.url);
@@ -136,18 +137,22 @@ function ClinicQuiz(){
   const contactLink=waLink(answers,profile);
   return <main className="prime-quiz min-h-svh">
    {stage===-1&&<section className="guide-stage">
-    <header className="guide-header"><img src={logoPrime.url} alt="Prime"/><span><Gift/> ACESSO LIBERADO</span></header>
+     <header className="guide-header"><img src={logoPrime.url} alt="Prime"/><span><Gift/> ACESSO EXCLUSIVO LIBERADO</span></header>
     <div className="guide-intro">
-     <span className="guide-kicker">PARABÉNS, ESTE MATERIAL É SEU</span>
-     <h1>Você recebeu gratuitamente o <em>Guia de Estratégias de Crescimento para Clínicas</em></h1>
-     <p>Um material prático para enxergar gargalos, fortalecer o posicionamento e transformar crescimento em processo — não em sorte.</p>
-     <div className="guide-highlights"><span><Check/> 5 pilares do crescimento</span><span><Check/> Diagnóstico e ações práticas</span><span><Check/> Estratégias para atrair e converter</span></div>
+      <span className="guide-kicker">PARABÉNS, SEU ACESSO ESTÁ CONFIRMADO</span>
+      <h1>Você acabou de receber o <strong>Guia de Crescimento para Clínicas.</strong></h1>
+      <p>Estratégias práticas para atrair mais pacientes, fortalecer sua autoridade e construir uma clínica com mais agendamentos e previsibilidade.</p>
+      <div className="guide-highlights"><span><Check/> 60 estratégias completas</span><span><Check/> Exemplos e ações práticas</span><span><Check/> Checklists para aplicar</span></div>
     </div>
+     <div className="guide-cover-card">
+      <img src={guideCover.url} alt="Capa do Guia de Crescimento para Clínicas"/>
+      <div className="guide-cover-footer"><span><BookOpen/> Seu material estratégico está pronto</span><a href={growthGuide.url} target="_blank" rel="noopener noreferrer">Abrir guia completo <ExternalLink/></a></div>
+     </div>
     <div className="guide-reader">
      <div className="guide-reader-bar"><span><BookOpen/> Leia o guia aqui</span><a href={growthGuide.url} target="_blank" rel="noopener noreferrer">Abrir em tela cheia <ExternalLink/></a></div>
      <iframe src={`${growthGuide.url}#toolbar=0&navpanes=0&view=FitH`} title="Guia de Estratégias de Crescimento para Clínicas"/>
     </div>
-    <div className="guide-diagnostic-cta"><span>AGORA, DESCUBRA O QUE SUA CLÍNICA PRECISA MELHORAR</span><h2>O guia mostra o caminho. O diagnóstico revela <em>onde você deve começar.</em></h2><p>Em menos de 1 minuto, responda algumas perguntas e receba uma leitura personalizada dos pontos que podem estar limitando sua agenda, sua autoridade e sua previsibilidade.</p><Button onClick={()=>setStage(0)}>Fazer meu diagnóstico gratuito <ArrowRight/></Button><small>Gratuito · rápido · resultado personalizado</small></div>
+     <div className="guide-diagnostic-cta"><span>PRÓXIMO PASSO RECOMENDADO</span><h2>O guia mostra as estratégias. Seu diagnóstico revela <strong>o que está impedindo sua clínica de crescer agora.</strong></h2><p>Em menos de 1 minuto, identifique os pontos que podem estar fazendo sua clínica perder pacientes, agendamentos e espaço para a concorrência — e receba uma direção personalizada para começar.</p><div className="guide-cta-benefits"><span><Check/> Análise da sua realidade</span><span><Check/> Prioridades claras</span><span><Check/> Próximos passos</span></div><Button onClick={()=>setStage(0)}>Iniciar meu diagnóstico gratuito <ArrowRight/></Button><small>Leva menos de 1 minuto · resultado personalizado</small></div>
    </section>}
   {stage===0&&<section className="prime-opening">
    <div className="opening-logo"><img src={logoPrime.url} alt="Prime"/></div>
