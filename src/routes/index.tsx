@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createElement, useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, ChevronRight, Globe2, MessageCircle, Search, Target, TrendingUp, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Check, ChevronRight, ExternalLink, Gift, Globe2, MessageCircle, Search, Target, TrendingUp, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import clinicImage from "@/assets/clinica-etapa-1.png.asset.json";
 import clinicProfessionals from "@/assets/clinic-professionals.jpg";
@@ -24,6 +24,7 @@ import audio1 from "@/assets/testimonials/audio-1.ogg.asset.json";
 import audio2 from "@/assets/testimonials/audio-2.ogg.asset.json";
 import testimonialVideo from "@/assets/testimonials/depoimento-clinica.mp4.asset.json";
 import testimonialPoster from "@/assets/testimonials/depoimento-clinica-poster.jpg";
+import growthGuide from "@/assets/guia-estrategia-crescimento-clinicas.pdf.asset.json";
 
 const WHATSAPP = "5542999787035";
 const images = [dep1,dep2,dep3,dep4,dep5,dep6,dep7,dep8,dep9,dep10,dep11,dep12,dep13].map(x => x.url);
@@ -99,7 +100,7 @@ export const Route = createFileRoute("/")({
 });
 
 function ClinicQuiz(){
- const [stage,setStage]=useState(0);
+ const [stage,setStage]=useState(-1);
   useEffect(()=>{window.scrollTo({top:0,behavior:"instant"})},[stage]);
   const [profile,setProfile]=useState<ClinicProfile>({name:"",clinic:"",area:"",context:""});
  const [answers,setAnswers]=useState<Answers>({});
@@ -133,7 +134,21 @@ function ClinicQuiz(){
   const firstName=profile.name.trim().split(/\s+/)[0] || "Você";
   const clinicName=profile.clinic.trim() || "sua clínica";
   const contactLink=waLink(answers,profile);
- return <main className="prime-quiz min-h-svh">
+  return <main className="prime-quiz min-h-svh">
+   {stage===-1&&<section className="guide-stage">
+    <header className="guide-header"><img src={logoPrime.url} alt="Prime"/><span><Gift/> ACESSO LIBERADO</span></header>
+    <div className="guide-intro">
+     <span className="guide-kicker">PARABÉNS, ESTE MATERIAL É SEU</span>
+     <h1>Você recebeu gratuitamente o <em>Guia de Estratégias de Crescimento para Clínicas</em></h1>
+     <p>Um material prático para enxergar gargalos, fortalecer o posicionamento e transformar crescimento em processo — não em sorte.</p>
+     <div className="guide-highlights"><span><Check/> 5 pilares do crescimento</span><span><Check/> Diagnóstico e ações práticas</span><span><Check/> Estratégias para atrair e converter</span></div>
+    </div>
+    <div className="guide-reader">
+     <div className="guide-reader-bar"><span><BookOpen/> Leia o guia aqui</span><a href={growthGuide.url} target="_blank" rel="noopener noreferrer">Abrir em tela cheia <ExternalLink/></a></div>
+     <iframe src={`${growthGuide.url}#toolbar=0&navpanes=0&view=FitH`} title="Guia de Estratégias de Crescimento para Clínicas"/>
+    </div>
+    <div className="guide-diagnostic-cta"><span>AGORA, DESCUBRA O QUE SUA CLÍNICA PRECISA MELHORAR</span><h2>O guia mostra o caminho. O diagnóstico revela <em>onde você deve começar.</em></h2><p>Em menos de 1 minuto, responda algumas perguntas e receba uma leitura personalizada dos pontos que podem estar limitando sua agenda, sua autoridade e sua previsibilidade.</p><Button onClick={()=>setStage(0)}>Fazer meu diagnóstico gratuito <ArrowRight/></Button><small>Gratuito · rápido · resultado personalizado</small></div>
+   </section>}
   {stage===0&&<section className="prime-opening">
    <div className="opening-logo"><img src={logoPrime.url} alt="Prime"/></div>
    <div className="opening-content">
@@ -200,7 +215,7 @@ function ClinicQuiz(){
        <div className="diagnostic-action"><span>SEU PRÓXIMO PASSO É UMA CONVERSA</span><h3>{firstName}, <em>não deixe as oportunidades de {clinicName} irem para a concorrência.</em></h3><p>Seu diagnóstico é um ponto de partida, não uma avaliação definitiva. Toque no botão: sua mensagem já vai com seu nome, área, contexto e todas as respostas. A Prime poderá entender seu cenário e conversar com você sobre as estratégias mais importantes para conquistar confiança, mais agendamentos e previsibilidade.</p><Button asChild><a href={contactLink} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Enviar meu diagnóstico e falar com a Prime <ArrowRight/></a></Button><small>Confira a mensagem no WhatsApp antes de enviar.</small></div>
       <div className="result-vsl"><div className="vsl-heading"><span className="opening-eyebrow">APRESENTAÇÃO PRIME</span><h3>Entenda como as peças se conectam.</h3><p>Veja a estratégia por trás de uma presença que atrai, transmite confiança e facilita novos agendamentos.</p></div><div className="vsl-box">{createElement("wistia-player",{"media-id":"lz02wotjxg",aspect:"0.5625",style:{display:"block",width:"100%",height:"100%"}})}</div></div>
        <div className="final-contact"><div><span>VAMOS TRANSFORMAR ESSE DIAGNÓSTICO EM UM PLANO?</span><h3>{firstName}, dê o próximo passo para {clinicName} crescer com mais direção.</h3><p>Envie a mensagem preparada com suas respostas. A conversa com a Prime é o próximo passo para definir o que priorizar.</p></div><Button asChild><a href={contactLink} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Enviar minhas respostas <ArrowRight/></a></Button></div>
-       <Button variant="ghost" className="restart" onClick={()=>{setProfile({name:"",clinic:"",area:"",context:""});setAnswers({});setSelected([]);setStage(0)}}>Refazer diagnóstico</Button>
+        <Button variant="ghost" className="restart" onClick={()=>{setProfile({name:"",clinic:"",area:"",context:""});setAnswers({});setSelected([]);setStage(-1)}}>Voltar ao guia</Button>
   </section>}
   {stage>0&&stage<resultStage&&<nav className="bottom-nav"><button onClick={back}><ArrowLeft/> Voltar</button><span>Diagnóstico estratégico para clínicas</span></nav>}
  </main>
