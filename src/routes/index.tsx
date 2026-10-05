@@ -139,7 +139,7 @@ function ClinicQuiz(){
    {stage===-1&&<section className="guide-stage">
      <header className="guide-header"><img src={logoPrime.url} alt="Prime"/><div><strong>Prime Assessoria</strong><span>Marketing para clínicas</span></div></header>
     <div className="guide-intro">
-      <span className="guide-kicker">PARABÉNS, ACESSO EXCLUSIVO LIBERADO!</span>
+      <span className="guide-kicker"><strong>PARABÉNS</strong>, ACESSO EXCLUSIVO LIBERADO!</span>
       <h1>Você acabou de receber o <strong>Guia de Crescimento para Clínicas.</strong></h1>
       <a className="guide-cover" href={growthGuide.url} target="_blank" rel="noopener noreferrer" aria-label="Abrir o Guia de Crescimento para Clínicas"><img src={guideCover.url} alt="Capa do Guia de Crescimento para Clínicas"/></a>
       <p>Estratégias práticas para atrair mais pacientes, fortalecer sua autoridade e construir uma clínica com mais agendamentos e previsibilidade.</p>
