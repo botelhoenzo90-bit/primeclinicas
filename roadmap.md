@@ -9,3 +9,4 @@
 - [x] Arredondar os depoimentos sem pausar o movimento e modernizar o diagnóstico com gráfico qualitativo, copy forte e análise breve.
 - [x] Perguntar nome, clínica, área e funcionamento; personalizar o diagnóstico e o texto pronto do WhatsApp com todas as respostas e dores.
 - [x] Reforçar os convites para conversa e o caminho de crescimento com foco em confiança, agendamentos e previsibilidade.
+- [x] Adicionar o guia gratuito como etapa inicial, com leitura no site e convite para o diagnóstico.
