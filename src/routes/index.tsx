@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createElement, useEffect, useMemo, useState } from "react";
-import { ArrowLeft, ArrowRight, Check, ChevronRight, Globe2, MessageCircle, Search, Target, TrendingUp, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronRight, Globe2, MessageCircle, Search, Target, TrendingUp, Zap, BookOpen, ListChecks, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import clinicImage from "@/assets/clinica-etapa-1.png.asset.json";
 import clinicProfessionals from "@/assets/clinic-professionals.jpg";
@@ -22,8 +22,10 @@ import dep13 from "@/assets/testimonials/depoimento-13.png.asset.json";
 import newestAudio from "@/assets/testimonials/depoimento-audio-novo.ogg.asset.json";
 import audio1 from "@/assets/testimonials/audio-1.ogg.asset.json";
 import audio2 from "@/assets/testimonials/audio-2.ogg.asset.json";
-import testimonialVideo from "@/assets/testimonials/depoimento-clinica.mp4.asset.json";
-import testimonialPoster from "@/assets/testimonials/depoimento-clinica-poster.jpg";
+import { VideoTestimonials } from "@/components/video-testimonials";
+import { GuideReader } from "@/components/guide-reader";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import floatingWhatsApp from "@/assets/whatsapp-flutuante.png.asset.json";
 import growthGuide from "@/assets/guia-estrategia-crescimento-clinicas.pdf.asset.json";
 import guideCover from "@/assets/capa-guia-crescimento-clinicas.png.asset.json";
 
@@ -102,6 +104,7 @@ export const Route = createFileRoute("/")({
 
 function ClinicQuiz(){
  const [stage,setStage]=useState(-1);
+ const [guideOpen,setGuideOpen]=useState(false);
   useEffect(()=>{window.scrollTo({top:0,behavior:"instant"})},[stage]);
   const [profile,setProfile]=useState<ClinicProfile>({name:"",clinic:"",area:"",context:""});
  const [answers,setAnswers]=useState<Answers>({});
@@ -141,12 +144,12 @@ function ClinicQuiz(){
     <div className="guide-intro">
       <span className="guide-kicker"><strong>PARABÉNS</strong>, ACESSO EXCLUSIVO LIBERADO!</span>
       <h1>Você acabou de receber o <strong>Guia de Crescimento para Clínicas.</strong></h1>
-      <a className="guide-cover" href={growthGuide.url} target="_blank" rel="noopener noreferrer" aria-label="Abrir o Guia de Crescimento para Clínicas"><img src={guideCover.url} alt="Capa do Guia de Crescimento para Clínicas"/></a>
+      <Button variant="ghost" className="guide-cover" onClick={()=>setGuideOpen(true)} aria-label="Ler o Guia de Crescimento para Clínicas"><img src={guideCover.url} alt="Capa do Guia de Crescimento para Clínicas"/><span><BookOpen/> Ler meu guia gratuito <ArrowRight/></span></Button>
       <p>Estratégias práticas para atrair mais pacientes, fortalecer sua autoridade e construir uma clínica com mais agendamentos e previsibilidade.</p>
-      <div className="guide-highlights"><span><Check/> 60 estratégias completas</span><span><Check/> Exemplos e ações práticas</span><span><Check/> Checklists para aplicar</span></div>
+      <div className="guide-highlights"><article><span><BookOpen/></span><strong>60 estratégias completas</strong><p>Mais direção para atrair, posicionar e crescer.</p></article><article><span><Lightbulb/></span><strong>Exemplos e ações práticas</strong><p>Ideias para conectar estratégia à sua rotina.</p></article><article><span><ListChecks/></span><strong>Checklists para aplicar</strong><p>Organize os próximos passos da sua clínica.</p></article></div>
       <div className="guide-social-proof"><div className="guide-avatars" aria-hidden="true">{[0,1,2,3,4].map(i=><span key={i}><img className={`avatar-image-${i}`} src={clinicProfessionals} alt=""/></span>)}</div><div><strong>Feito para quem vive a rotina de uma clínica</strong><span>Estratégias para crescer com mais direção e previsibilidade.</span></div></div>
     </div>
-     <div className="guide-diagnostic-cta"><span>PRÓXIMO PASSO RECOMENDADO</span><h2>O guia mostra as estratégias. Seu diagnóstico revela <strong>o que está impedindo sua clínica de crescer agora.</strong></h2><p>Em menos de 1 minuto, identifique os pontos que podem estar fazendo sua clínica perder pacientes, agendamentos e espaço para a concorrência — e receba uma direção personalizada para começar.</p><div className="guide-cta-benefits"><span><Check/> Análise da sua realidade</span><span><Check/> Prioridades claras</span><span><Check/> Próximos passos</span></div><Button onClick={()=>setStage(0)}>Iniciar meu diagnóstico gratuito <ArrowRight/></Button><small>Leva menos de 1 minuto · resultado personalizado</small></div>
+     <div className="guide-diagnostic-cta"><span>PRÓXIMO PASSO RECOMENDADO</span><h2>Sua clínica merece mais do que horários vazios.<strong>Descubra onde agir para conquistar mais agendamentos.</strong></h2><p>Você já tem o guia. Agora descubra quais oportunidades fazem sentido para a sua clínica: presença, confiança, novos pacientes ou conversão. Responda ao diagnóstico gratuito e receba prioridades para conversar sobre um plano de crescimento.</p><div className="guide-cta-benefits"><span><Check/> Análise da sua realidade</span><span><Check/> Prioridades claras</span><span><Check/> Próximos passos</span></div><Button onClick={()=>setStage(0)}>Iniciar meu diagnóstico gratuito <ArrowRight/></Button><small>Gratuito · poucos minutos · personalizado para sua clínica</small></div>
    </section>}
   {stage===0&&<section className="prime-opening">
    <div className="opening-logo"><img src={logoPrime.url} alt="Prime"/></div>
@@ -190,7 +193,7 @@ function ClinicQuiz(){
   </section>}
   {stage===proofStage&&<section className="proof-stage">
      <div className="proof-heading"><span className="proof-yellow">Histórias reais</span><h2>Quem vive a rotina de uma clínica <em>reconhece a diferença.</em></h2><p>Veja o depoimento e os relatos compartilhados com a Prime.</p></div>
-      <div className="proof-feature-video"><video controls playsInline preload="metadata" poster={testimonialPoster} src={testimonialVideo.url} aria-label="Depoimento em vídeo de cliente da Prime"/><span>Depoimento em vídeo</span></div>
+      <VideoTestimonials/>
      <div className="testimonial-marquee proof-top-images" aria-label="Relatos de clientes da Prime"><div className="testimonial-track">{[...images,...images].map((src,i)=><img key={i} src={src} alt={`Relato de cliente ${i%images.length+1}`} loading="lazy"/>)}</div></div>
     <div className="audio-row">{audios.map((src,i)=><audio key={src} controls preload="none" src={src} aria-label={`Depoimento em áudio ${i+1}`}/>)}</div>
     <Button onClick={showResult} className="stage-cta">Gerar meu diagnóstico <ArrowRight/></Button>
@@ -205,17 +208,22 @@ function ClinicQuiz(){
    </section>}
    {stage===resultStage&&!analyzing&&<section className="diagnostic-result">
        <header className="result-intro"><span className="result-kicker">{firstName}, SEU DIAGNÓSTICO ESTÁ PRONTO</span><h2>{firstName}, {clinicName} pode ser escolhida antes da concorrência. Comece pelos pontos que seguram seus agendamentos.</h2><p className="result-text">Na área de {profile.area.trim()}, ser encontrado, transmitir confiança e transformar interesse em consultas faz diferença. Pelas suas respostas, <strong>{result.title}</strong> {result.text}</p><div className="result-focus"><span>PRIMEIRO MOVIMENTO PARA {clinicName.toLocaleUpperCase("pt-BR")}</span><strong>{result.focus}</strong></div></header>
+<div className="result-inline-contact"><Button asChild><a href={contactLink} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Conversar sobre as prioridades da minha clínica <ArrowRight/></a></Button><small>Sua mensagem já inclui o diagnóstico da clínica.</small></div>
       <div className="diagnostic-dashboard"><div className="dashboard-title"><span>01 / SEU MAPA DE OPORTUNIDADES</span><strong>O que sua clínica pode melhorar agora</strong><p>Leitura das suas respostas, não uma medição de desempenho. As áreas destacadas refletem o que você apontou como prioridade.</p></div><div className="priority-chart" role="img" aria-label="Mapa qualitativo de prioridades indicadas pelas respostas">
       {opportunities.map(({label,detail,priority})=><div className={`chart-row ${priority?"is-priority":""}`} key={label}><div className="chart-label"><strong>{label}</strong><small>{detail}</small></div><div className="chart-track"><span className={priority?"marked":""}/></div><b>{priority?"Prioridade indicada":"Para avaliar"}</b></div>)}
       </div><div className="chart-key"><span><i/> Suas prioridades</span><span><i/> Outras áreas para avaliar</span></div></div>
+<div className="result-inline-contact"><Button asChild><a href={contactLink} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Quero melhorar esses pontos com a Prime <ArrowRight/></a></Button><small>Sua mensagem já inclui o diagnóstico da clínica.</small></div>
       <div className="result-section-heading"><span>02 / O QUE MUDAR</span><h3>Não deixe a concorrência ser a escolha mais fácil.</h3><p>Entre a primeira busca e a consulta, cada etapa precisa fazer o paciente encontrar, confiar e agendar com a sua clínica.</p></div>
       <div className="improvement-grid"><article className="improvement-card problem"><span>O QUE PODE ESTAR CUSTANDO AGENDAMENTOS</span><h3>Se a jornada falha, a agenda sente.</h3><ul><li>Quem procura atendimento encontra outra clínica primeiro.</li><li>Uma apresentação fraca não transmite a confiança que o seu trabalho merece.</li><li>O interesse chega, mas a conversa não vira agendamento.</li><li>Depender só de indicações dificulta planejar o crescimento.</li></ul></article><article className="improvement-card solution"><span>COMO VIRAR ESSE JOGO</span><h3>Uma estrutura para atrair e converter melhor.</h3><ul><li><b>Site profissional</b> para apresentar seus diferenciais e facilitar o contato.</li><li><b>Google e presença local</b> para aparecer na hora da procura.</li><li><b>Campanhas direcionadas</b> para abrir novas conversas.</li><li><b>Atendimento organizado</b> para conduzir o interesse até a agenda.</li></ul></article></div>
        <div className="solution-stack"><div className="result-section-heading"><span>03 / DA OPORTUNIDADE AO AGENDAMENTO</span><h3>Faça sua clínica aparecer, convencer e agendar — antes que o paciente escolha a concorrência.</h3><p>Para {clinicName}, o caminho começa pelo que você apontou como prioridade. Estas frentes ajudam a construir confiança, aumentar a procura e transformar contatos em consultas com mais consistência.</p></div><div className="solution-grid">{[[Globe2,"Mostre por que escolher você","Um site profissional apresenta sua especialidade, seus diferenciais e um caminho claro para agendar."],[Search,"Apareça na hora da procura","Presença no Google para que pacientes da sua região encontrem a clínica quando buscarem atendimento."],[Target,"Gere novas oportunidades","Campanhas direcionadas para alcançar pessoas com interesse real nos seus serviços."],[MessageCircle,"Não perca o contato","Organize o atendimento para responder com clareza, gerar confiança e facilitar o agendamento."],[TrendingUp,"Construa previsibilidade","Acompanhe de onde vêm os contatos e ajuste as ações para depender menos do acaso."]].map(([Icon,title,text],i)=>{const I=Icon as typeof Globe2;return <article className="solution-row" key={title as string}><span><I/></span><small>PASSO 0{i+1}</small><strong>{title as string}</strong><p>{text as string}</p></article>})}</div></div>
+<div className="result-inline-contact"><Button asChild><a href={contactLink} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Traçar os próximos passos para minha clínica <ArrowRight/></a></Button><small>Sua mensagem já inclui o diagnóstico da clínica.</small></div>
        <div className="diagnostic-action"><span>SEU PRÓXIMO PASSO É UMA CONVERSA</span><h3>{firstName}, <em>não deixe as oportunidades de {clinicName} irem para a concorrência.</em></h3><p>Seu diagnóstico é um ponto de partida, não uma avaliação definitiva. Toque no botão: sua mensagem já vai com seu nome, área, contexto e todas as respostas. A Prime poderá entender seu cenário e conversar com você sobre as estratégias mais importantes para conquistar confiança, mais agendamentos e previsibilidade.</p><Button asChild><a href={contactLink} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Enviar meu diagnóstico e falar com a Prime <ArrowRight/></a></Button><small>Confira a mensagem no WhatsApp antes de enviar.</small></div>
       <div className="result-vsl"><div className="vsl-heading"><span className="opening-eyebrow">APRESENTAÇÃO PRIME</span><h3>Entenda como as peças se conectam.</h3><p>Veja a estratégia por trás de uma presença que atrai, transmite confiança e facilita novos agendamentos.</p></div><div className="vsl-box">{createElement("wistia-player",{"media-id":"lz02wotjxg",aspect:"0.5625",style:{display:"block",width:"100%",height:"100%"}})}</div></div>
        <div className="final-contact"><div><span>VAMOS TRANSFORMAR ESSE DIAGNÓSTICO EM UM PLANO?</span><h3>{firstName}, dê o próximo passo para {clinicName} crescer com mais direção.</h3><p>Envie a mensagem preparada com suas respostas. A conversa com a Prime é o próximo passo para definir o que priorizar.</p></div><Button asChild><a href={contactLink} target="_blank" rel="noopener noreferrer"><img src={whatsappLogo.url} alt=""/> Enviar minhas respostas <ArrowRight/></a></Button></div>
         <Button variant="ghost" className="restart" onClick={()=>{setProfile({name:"",clinic:"",area:"",context:""});setAnswers({});setSelected([]);setStage(-1)}}>Voltar ao guia</Button>
   </section>}
   {stage>0&&stage<resultStage&&<nav className="bottom-nav"><button onClick={back}><ArrowLeft/> Voltar</button><span>Diagnóstico estratégico para clínicas</span></nav>}
+ {stage===resultStage&&!analyzing&&<Button asChild variant="ghost" className="floating-whatsapp"><a href={contactLink} target="_blank" rel="noopener noreferrer" aria-label="Conversar no WhatsApp sobre meu diagnóstico" title="Conversar sobre meu diagnóstico"><img src={floatingWhatsApp.url} alt="WhatsApp"/></a></Button>}
+ <Dialog open={guideOpen} onOpenChange={setGuideOpen}><DialogContent className="guide-reader-dialog"><DialogTitle>Guia de Crescimento para Clínicas</DialogTitle><DialogDescription className="sr-only">Leia seu guia gratuito e continue para o diagnóstico da sua clínica.</DialogDescription>{guideOpen&&<GuideReader url={growthGuide.url} onDiagnostic={()=>{setGuideOpen(false);setStage(0)}}/>}</DialogContent></Dialog>
  </main>
 }

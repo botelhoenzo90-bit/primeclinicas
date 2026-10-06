@@ -10,3 +10,7 @@
 - [x] Perguntar nome, clínica, área e funcionamento; personalizar o diagnóstico e o texto pronto do WhatsApp com todas as respostas e dores.
 - [x] Reforçar os convites para conversa e o caminho de crescimento com foco em confiança, agendamentos e previsibilidade.
 - [x] Adicionar o guia gratuito como etapa inicial, com leitura no site e convite para o diagnóstico.
+- [ ] Melhorar os benefícios e destaques amarelos do guia, leitura sem sair da página e convite ao diagnóstico.
+- [ ] Adicionar os dois vídeos em carrossel com setas na ordem solicitada.
+- [ ] Distribuir convites e botão flutuante do WhatsApp no resultado, amarelar o card de conversa e centralizar as soluções.
+- [ ] Validar a leitura e o fluxo completo.
