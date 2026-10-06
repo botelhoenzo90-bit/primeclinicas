@@ -13,4 +13,5 @@
 - Use Wistia media ID `lz02wotjxg` and existing testimonial asset pointers without copying or altering the original media; this preserves the supplied evidence and current video.
 - Keep the diagnostic visualization qualitative rather than inventing percentage scores from quiz choices; the answers identify priorities, not measured clinic performance.
 - Collect visitor and clinic context only in client-side quiz state and include it in the WhatsApp draft after the visitor clicks; this personalizes the conversation without storing private information on the site.
-- Present the uploaded growth guide in a dedicated client-side welcome stage before the quiz; this preserves the lead-magnet journey without creating another content route.
+- Present the uploaded growth guide in a dedicated client-side welcome stage with an on-demand PDF.js reader dialog; lazy-load the renderer and worker in the browser to retain visitors without server-side browser-library imports.
+- Keep video testimonial ordering in a shared browser-safe module and render one active video at a time; changing slides unmounts playback and avoids simultaneous audio.
